@@ -1,0 +1,159 @@
+@import "tailwindcss";
+
+/* Ozfero theme tokens. Light by default; dark follows the OS unless data-theme says otherwise. */
+:root {
+  --bg: #f3f7ef;
+  --bg-soft: #eaf2e4;
+  --surface: #ffffff;
+  --fg: #12261a;
+  --muted: #5b6e60;
+  --line: #dde7d8;
+  --brand: #2f8f0f;
+  --brand-deep: #1d6b0c;
+  --brand-ink: #ffffff;
+  --brand-soft: #e6f4dc;
+  --lime: #c6ff00;
+  --rail-a: #3f8f12;
+  --rail-b: #0a3b26;
+  --warn-bg: #fff6d6;
+  --warn-line: #ecd27a;
+  --warn-fg: #6b5200;
+  --s-new-bg: #e9eee6; --s-new-fg: #44564a;
+  --s-con-bg: #dcecff; --s-con-fg: #1d5aa6;
+  --s-int-bg: #fff0c2; --s-int-fg: #7a5600;
+  --s-not-bg: #fde0e0; --s-not-fg: #a12b2b;
+  --s-cnv-bg: #d4f3c4; --s-cnv-fg: #1d6b0c;
+  --danger: #b3261e;
+  --btn-a: #52b51c;
+  --btn-b: #2a7d12;
+  --btn-fg: #ffffff;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #07140d; --bg-soft: #0b1b11; --surface: #0e2217; --fg: #e8f5e0; --muted: #96ad9b; --line: #1d3a28;
+    --brand: #8bd82a; --brand-deep: #8bd82a; --brand-ink: #07140d; --brand-soft: #16331f;
+    --warn-bg: #3a3012; --warn-line: #6e5a1c; --warn-fg: #f2dc8a;
+    --s-new-bg: #1d3426; --s-new-fg: #b6c9bb;
+    --s-con-bg: #162f4d; --s-con-fg: #9cc7f5;
+    --s-int-bg: #45360d; --s-int-fg: #f2d37a;
+    --s-not-bg: #4a1d1d; --s-not-fg: #f3a3a3;
+    --s-cnv-bg: #1d4a14; --s-cnv-fg: #a9ec8c;
+    --danger: #ff8f86;
+    --btn-a: #b8f04a; --btn-b: #6fc21f; --btn-fg: #07140d;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #07140d; --bg-soft: #0b1b11; --surface: #0e2217; --fg: #e8f5e0; --muted: #96ad9b; --line: #1d3a28;
+  --brand: #8bd82a; --brand-deep: #8bd82a; --brand-ink: #07140d; --brand-soft: #16331f;
+  --warn-bg: #3a3012; --warn-line: #6e5a1c; --warn-fg: #f2dc8a;
+  --s-new-bg: #1d3426; --s-new-fg: #b6c9bb;
+  --s-con-bg: #162f4d; --s-con-fg: #9cc7f5;
+  --s-int-bg: #45360d; --s-int-fg: #f2d37a;
+  --s-not-bg: #4a1d1d; --s-not-fg: #f3a3a3;
+  --s-cnv-bg: #1d4a14; --s-cnv-fg: #a9ec8c;
+  --danger: #ff8f86;
+  --btn-a: #b8f04a; --btn-b: #6fc21f; --btn-fg: #07140d;
+  color-scheme: dark;
+}
+
+/* Remap the Tailwind palette names used in components onto the theme tokens. */
+@theme inline {
+  --font-display: var(--font-outfit), "Segoe UI", system-ui, sans-serif;
+  --font-sans: var(--font-dm-sans), "Segoe UI", system-ui, sans-serif;
+  --color-white: var(--surface);
+  --color-slate-50: var(--bg-soft);
+  --color-slate-100: var(--bg-soft);
+  --color-slate-200: var(--line);
+  --color-slate-300: var(--line);
+  --color-slate-500: var(--muted);
+  --color-slate-600: var(--muted);
+  --color-slate-700: var(--fg);
+  --color-slate-900: var(--fg);
+  --color-violet-50: var(--brand-soft);
+  --color-violet-200: var(--brand-soft);
+  --color-violet-600: var(--brand);
+  --color-violet-700: var(--brand);
+  --color-violet-800: var(--brand-deep);
+  --color-rose-50: var(--s-not-bg);
+  --color-rose-600: var(--danger);
+  --color-rose-700: var(--danger);
+  --color-emerald-700: var(--s-cnv-fg);
+  --color-amber-50: var(--warn-bg);
+  --color-amber-200: var(--warn-line);
+  --color-amber-300: var(--warn-line);
+  --color-amber-900: var(--warn-fg);
+}
+
+@layer base {
+  *, ::after, ::before { border-color: var(--line); }
+  html { color-scheme: light; }
+  :root[data-theme="dark"] { color-scheme: dark; }
+  body { background: var(--bg); color: var(--fg); font-family: var(--font-sans); font-size: 14px; line-height: 1.5; }
+  h1 { font-size: 28px; font-weight: 700; }
+  h1, h2, h3 { font-family: var(--font-display); letter-spacing: -0.01em; text-wrap: balance; }
+  :focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+}
+
+@layer components {
+  .input { @apply w-full min-w-0 rounded-[10px] border px-[11px] py-[9px] text-sm; background: var(--surface); border-color: var(--line); color: var(--fg); }
+  .input:focus { border-color: var(--brand); outline: 2px solid var(--brand-soft); }
+  .input:disabled { background: var(--bg-soft); }
+  .label { @apply mb-1 block text-xs font-semibold; color: var(--muted); }
+  .btn { @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-[10px] px-4 py-[9px] text-sm font-semibold disabled:opacity-50;
+    background: linear-gradient(135deg, var(--btn-a), var(--btn-b)); color: var(--btn-fg); box-shadow: 0 4px 12px #2a7d1233; }
+  .btn:hover { filter: brightness(1.06); }
+  .btn-secondary { @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-[10px] border px-4 py-[9px] text-sm font-semibold disabled:opacity-50;
+    background: var(--surface); color: var(--fg); border-color: var(--line); }
+  .btn-secondary:hover { border-color: var(--brand); }
+  .card { @apply rounded-[14px] border p-[18px]; background: var(--surface); border-color: var(--line); }
+  .th { @apply px-[10px] py-2 text-left text-[11px] font-semibold uppercase tracking-[0.08em]; color: var(--muted); }
+  .td { @apply px-[10px] py-[11px] align-top text-sm; }
+  tbody tr:hover { background: var(--brand-soft); }
+
+  .badge { @apply inline-block whitespace-nowrap rounded-full px-[10px] py-[2px] text-xs font-semibold; }
+  .b-new { background: var(--s-new-bg); color: var(--s-new-fg); }
+  .b-contacted { background: var(--s-con-bg); color: var(--s-con-fg); }
+  .b-interested { background: var(--s-int-bg); color: var(--s-int-fg); }
+  .b-not_interested { background: var(--s-not-bg); color: var(--s-not-fg); }
+  .b-converted { background: var(--s-cnv-bg); color: var(--s-cnv-fg); }
+
+  .page-head { @apply mb-5 flex flex-wrap items-end justify-between gap-3; }
+  .page-head h1 { @apply text-[28px] font-bold; }
+  .page-head p { @apply mt-0.5; color: var(--muted); }
+
+  .stats { @apply mb-[18px] grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6; }
+  .stat { @apply block rounded-[14px] border p-[14px] text-left; background: var(--surface); border-color: var(--line); }
+  a.stat:hover { border-color: var(--brand); }
+  .stat span { @apply text-xs; color: var(--muted); }
+  .stat b { @apply mt-1 block text-[30px] leading-[1.1] font-bold tabular-nums; font-family: var(--font-display); }
+  .stat.hero { border: 0; background: linear-gradient(150deg, #5fbd1f, #0d4a27); color: #fff; }
+  .stat.hero span { color: #e3f8cf; }
+  .stat.hero b { color: var(--lime); }
+  .dot { @apply mr-1.5 inline-block h-2 w-2 rounded-full; }
+
+  .chip { @apply cursor-pointer rounded-full border px-3 py-1 text-[13px]; background: var(--surface); border-color: var(--line); }
+  .chip[aria-current="true"] { background: var(--brand); border-color: var(--brand); color: var(--brand-ink); font-weight: 600; }
+
+  /* App shell: gradient rail + working surface (collapses to a top bar on phones). */
+  .app { @apply grid min-h-screen grid-cols-1 md:grid-cols-[248px_minmax(0,1fr)]; }
+  .rail { @apply flex flex-col gap-2.5 px-4 py-3 text-[#f1fbe9] md:sticky md:top-0 md:h-screen md:gap-[22px] md:px-[14px] md:py-5;
+    background: linear-gradient(160deg, var(--rail-a) 0%, #1f6a14 38%, var(--rail-b) 100%); }
+  .brand { @apply flex items-center gap-3 px-1.5; }
+  .brand img { @apply h-[46px] w-[46px] rounded-xl; }
+  .brand .word { @apply text-[17px] leading-none font-extrabold text-white; font-family: var(--font-display); }
+  .brand .sub { @apply mt-1 text-[11px] uppercase tracking-[0.12em]; color: #d4f5b4; }
+  .nav { @apply flex gap-[3px] overflow-x-auto pb-1 md:flex-col md:overflow-visible md:pb-0; }
+  .nav a, .nav button { @apply flex cursor-pointer items-center gap-2.5 rounded-[10px] border-0 bg-transparent px-3 py-2 text-left font-medium whitespace-nowrap text-[#e6f7d8] md:py-2.5; }
+  .nav a:hover, .nav button:hover { background: #ffffff1a; }
+  .nav a[aria-current="page"] { background: #fff; color: #0d4a1c; font-weight: 600; }
+  .nav svg { @apply h-[18px] w-[18px] flex-none; }
+  .nav .tag { @apply ml-auto rounded-full px-[7px] py-px text-[10px] font-bold; background: var(--lime); color: #0a3b26; }
+  .nav .only-mobile { @apply md:hidden; }
+  .me { @apply mt-auto hidden items-center gap-2.5 rounded-xl p-2.5 md:flex; background: #00000026; }
+  .avatar { @apply grid h-[34px] w-[34px] flex-none place-items-center rounded-full text-[13px] font-bold; background: var(--lime); color: #0a3b26; font-family: var(--font-display); }
+  .me small { @apply block text-[11px]; color: #cfeab9; }
+  .me-actions { @apply ml-auto flex flex-col items-end gap-1 text-xs; }
+  .me-actions button { @apply cursor-pointer rounded-lg border border-white/30 bg-transparent px-2 py-0.5 text-white; }
+  .main { @apply min-w-0 px-4 pt-[18px] pb-[60px] md:px-7 md:pt-[26px]; }
+}

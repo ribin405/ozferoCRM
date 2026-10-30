@@ -1,0 +1,392 @@
+<title>Ozfero Vendor Desk</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=DM+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: dark-green rail on the left, light working surface on the right; mobile collapses the rail to a top bar. */
+:root {
+  --bg: #f3f7ef;
+  --surface: #ffffff;
+  --fg: #12261a;
+  --muted: #5b6e60;
+  --line: #dde7d8;
+  --brand: #2f8f0f;
+  --brand-ink: #ffffff;
+  --brand-soft: #e6f4dc;
+  --lime: #c6ff00;
+  --rail-a: #3f8f12;
+  --rail-b: #0a3b26;
+  --rail-fg: #f1fbe9;
+  --warn-bg: #fff6d6; --warn-line: #ecd27a; --warn-fg: #6b5200;
+  --s-new-bg: #e9eee6; --s-new-fg: #44564a;
+  --s-con-bg: #dcecff; --s-con-fg: #1d5aa6;
+  --s-int-bg: #fff0c2; --s-int-fg: #7a5600;
+  --s-not-bg: #fde0e0; --s-not-fg: #a12b2b;
+  --s-cnv-bg: #d4f3c4; --s-cnv-fg: #1d6b0c;
+  --danger: #b3261e;
+  --display: "Outfit", "Segoe UI", system-ui, sans-serif;
+  --body: "DM Sans", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #07140d; --surface: #0e2217; --fg: #e8f5e0; --muted: #96ad9b; --line: #1d3a28;
+    --brand: #8bd82a; --brand-ink: #07140d; --brand-soft: #16331f;
+    --warn-bg: #3a3012; --warn-line: #6e5a1c; --warn-fg: #f2dc8a;
+    --s-new-bg: #1d3426; --s-new-fg: #b6c9bb;
+    --s-con-bg: #162f4d; --s-con-fg: #9cc7f5;
+    --s-int-bg: #45360d; --s-int-fg: #f2d37a;
+    --s-not-bg: #4a1d1d; --s-not-fg: #f3a3a3;
+    --s-cnv-bg: #1d4a14; --s-cnv-fg: #a9ec8c;
+    --danger: #ff8f86; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #07140d; --surface: #0e2217; --fg: #e8f5e0; --muted: #96ad9b; --line: #1d3a28;
+  --brand: #8bd82a; --brand-ink: #07140d; --brand-soft: #16331f;
+  --warn-bg: #3a3012; --warn-line: #6e5a1c; --warn-fg: #f2dc8a;
+  --s-new-bg: #1d3426; --s-new-fg: #b6c9bb;
+  --s-con-bg: #162f4d; --s-con-fg: #9cc7f5;
+  --s-int-bg: #45360d; --s-int-fg: #f2d37a;
+  --s-not-bg: #4a1d1d; --s-not-fg: #f3a3a3;
+  --s-cnv-bg: #1d4a14; --s-cnv-fg: #a9ec8c;
+  --danger: #ff8f86; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 14px/1.5 var(--body); }
+h1, h2, h3 { font-family: var(--display); margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+button, input, select, textarea { font: inherit; color: inherit; }
+a { color: var(--brand); }
+:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+
+.app { display: grid; grid-template-columns: 248px minmax(0, 1fr); min-height: 100vh; }
+.rail {
+  background: linear-gradient(160deg, var(--rail-a) 0%, #1f6a14 38%, var(--rail-b) 100%);
+  color: var(--rail-fg); padding: 20px 14px; display: flex; flex-direction: column; gap: 22px;
+  position: sticky; top: 0; height: 100vh;
+}
+.brand { display: flex; align-items: center; gap: 10px; padding: 0 6px; }
+.mark {
+  width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center;
+  background: linear-gradient(145deg, #5fc12a, #0f5a24); box-shadow: inset 0 0 0 1px #ffffff40, 0 6px 14px #00000040;
+  font: 800 19px/1 var(--display); color: #fff;
+}
+.word { font: 800 25px/1 var(--display); letter-spacing: -0.02em; color: #fff; }
+.sub { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #d4f5b4; }
+.nav { display: flex; flex-direction: column; gap: 3px; }
+.nav button {
+  display: flex; align-items: center; gap: 10px; text-align: left; border: 0; background: transparent;
+  padding: 10px 12px; border-radius: 10px; color: #e6f7d8; cursor: pointer; font-weight: 500;
+}
+.nav button:hover { background: #ffffff1a; }
+.nav button[aria-current="page"] { background: #ffffff; color: #0d4a1c; font-weight: 600; }
+.nav svg { width: 18px; height: 18px; flex: none; }
+.nav .tag { margin-left: auto; font-size: 10px; padding: 1px 7px; border-radius: 99px; background: var(--lime); color: #0a3b26; font-weight: 700; }
+.me { margin-top: auto; display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 12px; background: #00000026; }
+.avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--lime); color: #0a3b26; display: grid; place-items: center; font: 700 13px var(--display); flex: none; }
+.me small { display: block; color: #cfeab9; font-size: 11px; }
+.theme { border: 1px solid #ffffff55; background: transparent; color: #fff; border-radius: 8px; padding: 4px 8px; cursor: pointer; margin-left: auto; font-size: 12px; }
+
+.main { padding: 26px 28px 60px; min-width: 0; }
+.head { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; justify-content: space-between; margin-bottom: 20px; }
+.head h1 { font-size: 28px; font-weight: 700; }
+.head p { margin: 2px 0 0; color: var(--muted); }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; border: 0; border-radius: 10px; padding: 9px 16px; cursor: pointer; font-weight: 600;
+  background: linear-gradient(135deg, #52b51c, #2a7d12); color: #fff; box-shadow: 0 4px 12px #2a7d1233;
+}
+.btn:hover { filter: brightness(1.06); }
+.btn.ghost { background: var(--surface); color: var(--fg); border: 1px solid var(--line); box-shadow: none; }
+.btn.sm { padding: 5px 10px; font-size: 12px; border-radius: 8px; }
+:root[data-theme="dark"] .btn:not(.ghost) { color: #07140d; background: linear-gradient(135deg, #b8f04a, #6fc21f); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn:not(.ghost) { color: #07140d; background: linear-gradient(135deg, #b8f04a, #6fc21f); } }
+
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; min-width: 0; }
+.panel > h2 { font-size: 16px; margin-bottom: 12px; }
+.stats { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; margin-bottom: 18px; }
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px; cursor: pointer; text-align: left; }
+.stat:hover { border-color: var(--brand); }
+.stat span { font-size: 12px; color: var(--muted); }
+.stat b { display: block; font: 700 30px/1.1 var(--display); font-variant-numeric: tabular-nums; margin-top: 4px; }
+.stat.hero {
+  background: linear-gradient(150deg, #5fbd1f, #0d4a27); border: 0; color: #fff; cursor: default;
+}
+.stat.hero span { color: #e3f8cf; }
+.stat.hero b { color: var(--lime); }
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+.cols { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 18px; }
+
+.tablewrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; min-width: 640px; }
+th { text-align: left; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding: 8px 10px; border-bottom: 1px solid var(--line); font-weight: 600; }
+td { padding: 11px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tbody tr { cursor: pointer; }
+tbody tr:hover { background: var(--brand-soft); }
+td small { display: block; color: var(--muted); font-size: 12px; }
+td .nm { font-weight: 600; }
+.badge { display: inline-block; border-radius: 99px; padding: 2px 10px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.b-new { background: var(--s-new-bg); color: var(--s-new-fg); }
+.b-contacted { background: var(--s-con-bg); color: var(--s-con-fg); }
+.b-interested { background: var(--s-int-bg); color: var(--s-int-fg); }
+.b-not_interested { background: var(--s-not-bg); color: var(--s-not-fg); }
+.b-converted { background: var(--s-cnv-bg); color: var(--s-cnv-fg); }
+
+.filters { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+.filters input[type=search] { flex: 1 1 240px; }
+input, select, textarea { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 9px 11px; width: 100%; min-width: 0; }
+input:focus, select:focus, textarea:focus { border-color: var(--brand); outline: 2px solid var(--brand-soft); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.chip { border: 1px solid var(--line); background: var(--surface); border-radius: 99px; padding: 4px 12px; cursor: pointer; font-size: 13px; }
+.chip[aria-pressed="true"] { background: var(--brand); border-color: var(--brand); color: var(--brand-ink); font-weight: 600; }
+.pager { display: flex; justify-content: space-between; margin-top: 12px; color: var(--muted); font-size: 13px; }
+
+.form { display: grid; gap: 16px; max-width: 920px; }
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.span2 { grid-column: 1 / -1; }
+label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 4px; }
+.warn { background: var(--warn-bg); border: 1px solid var(--warn-line); color: var(--warn-fg); border-radius: 12px; padding: 12px 14px; }
+.warn a { color: inherit; font-weight: 700; }
+.hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+.kv { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 8px 12px; margin: 0; }
+.kv dt { color: var(--muted); } .kv dd { margin: 0; overflow-wrap: anywhere; }
+.timeline { list-style: none; margin: 0; padding: 0 0 0 16px; border-left: 2px solid var(--line); display: grid; gap: 16px; }
+.timeline li { position: relative; }
+.timeline li::before { content: ""; position: absolute; left: -23px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--brand); box-shadow: 0 0 0 3px var(--surface); }
+.over { color: var(--danger); font-weight: 600; }
+.list { list-style: none; margin: 0; padding: 0; }
+.list li { display: flex; flex-wrap: wrap; gap: 6px 12px; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line); cursor: pointer; }
+.list li:last-child { border: 0; }
+.cat { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; background: var(--surface); }
+.cat h3 { font-size: 15px; display: flex; justify-content: space-between; gap: 8px; }
+.subs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.sub-pill { background: var(--brand-soft); border-radius: 8px; padding: 3px 10px; font-size: 13px; }
+.sub-pill.off { opacity: .5; text-decoration: line-through; }
+.note { margin-top: 24px; font-size: 12px; color: var(--muted); }
+.toast { position: fixed; bottom: max(18px, env(safe-area-inset-bottom, 0px)); left: 50%; transform: translateX(-50%); background: #0a3b26; color: #fff; padding: 10px 18px; border-radius: 12px; box-shadow: 0 8px 24px #0006; z-index: 20; }
+.topbar { display: none; }
+
+@media (max-width: 960px) {
+  .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .cols { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 760px) {
+  .app { grid-template-columns: minmax(0, 1fr); }
+  .rail { position: static; height: auto; padding: 12px 16px; gap: 10px; }
+  .rail .nav { flex-direction: row; overflow-x: auto; padding-bottom: 4px; }
+  .rail .nav button { white-space: nowrap; padding: 8px 12px; }
+  .me { display: none; }
+  .main { padding: 18px max(16px, env(safe-area-inset-right, 0px)) 60px max(16px, env(safe-area-inset-left, 0px)); }
+  .rail { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .grid2 { grid-template-columns: minmax(0, 1fr); }
+  .kv { grid-template-columns: 100px minmax(0, 1fr); }
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (prefers-reduced-motion: no-preference) { .btn, .stat, .nav button { transition: filter .15s, border-color .15s, background .15s; } }
+</style>
+
+<div class="app">
+  <aside class="rail">
+    <div class="brand">
+      <div class="mark" aria-hidden="true">Oz</div>
+      <div><div class="word">Ozfero</div><div class="sub">Vendor desk</div></div>
+    </div>
+    <nav class="nav" id="nav" aria-label="Main"></nav>
+    <div class="me">
+      <div class="avatar">AK</div>
+      <div><b>Aisha Khan</b><small>Administrator</small></div>
+      <button class="theme" id="theme" type="button" aria-label="Toggle light or dark">Theme</button>
+    </div>
+  </aside>
+  <main class="main" id="view" tabindex="-1"></main>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const ICON = {
+  dashboard: '<path d="M3 12 12 4l9 8v8a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+  enquiries: '<path d="M4 5h16M4 12h16M4 19h10"/>',
+  followups: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  categories: '<path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM17 13v7M13.5 16.5h7"/>',
+  team: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6.5 6.5 0 0 1 3.5 5.5"/>',
+  settings: '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>'
+};
+const NAV = [
+  ['dashboard', 'Dashboard'], ['enquiries', 'Vendor Enquiries'], ['followups', 'Follow-ups'],
+  ['categories', 'Categories', 'Admin'], ['team', 'Team', 'Admin'], ['settings', 'Settings']
+];
+const STATUS = { new: 'New', contacted: 'Contacted', interested: 'Interested', not_interested: 'Not Interested', converted: 'Converted' };
+const TAX = {
+  'Restaurants & Cafes': ['Restaurant', 'Cafe', 'Fast Food', 'Bakery'],
+  'Beauty & Wellness': ['Salon', 'Barber', 'Spa', 'Nail Studio'],
+  'Fitness & Sports': ['Gym', 'Yoga & Pilates', 'Sports Academy'],
+  'Retail & Shopping': ['Fashion', 'Electronics', 'Grocery', 'Optical'],
+  'Automotive': ['Car Wash', 'Garage & Service', 'Detailing'],
+  'Entertainment & Leisure': ['Attractions', 'Gaming', 'Cinema']
+};
+const TEAM = ['Aisha Khan', 'Omar Siddiqui', 'Layla Haddad'];
+const day = n => { const d = new Date(); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10); };
+const fmt = s => s ? new Date(s + 'T00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '—';
+
+/* Example records only. */
+let data = [
+  { id: 1, code: 'OZV-2026-00001', name: 'The Coffee Club', branch: 'Deira City Centre', cat: 'Restaurants & Cafes', sub: 'Cafe', person: 'Faisal Rahman', role: 'Manager', phone: '050 123 4567', area: 'Deira', emirate: 'Dubai', status: 'interested', who: 'Aisha Khan', next: day(0), src: 'Visit', notes: 'Open to a buy-1-get-1 on beverages. Wants to see the vendor dashboard first.', log: [
+    { t: 'Visit', at: day(-3), out: 'Met the manager, shared the Ozfero brochure.', by: 'Aisha Khan' },
+    { t: 'Call', at: day(-1), out: 'Interested. Asked for a demo on Sunday.', by: 'Aisha Khan' }] },
+  { id: 2, code: 'OZV-2026-00002', name: 'Glow Studio', branch: '', cat: 'Beauty & Wellness', sub: 'Salon', person: 'Reem Al Ali', role: 'Owner', phone: '055 889 2201', area: 'Al Nahda', emirate: 'Sharjah', status: 'contacted', who: 'Omar Siddiqui', next: day(-2), src: 'WhatsApp', notes: 'Sent the offer deck on WhatsApp.', log: [{ t: 'WhatsApp', at: day(-5), out: 'Sent deck, waiting for reply.', by: 'Omar Siddiqui' }] },
+  { id: 3, code: 'OZV-2026-00003', name: 'IronWorks Gym', branch: 'JLT', cat: 'Fitness & Sports', sub: 'Gym', person: 'Karim Nasser', role: 'Marketing', phone: '052 330 7718', area: 'JLT', emirate: 'Dubai', status: 'new', who: 'Layla Haddad', next: day(1), src: 'Referral', notes: '', log: [] },
+  { id: 4, code: 'OZV-2026-00004', name: 'Zara Auto Care', branch: '', cat: 'Automotive', sub: 'Car Wash', person: 'Sanjay Menon', role: 'Owner', phone: '056 410 5522', area: 'Mussafah', emirate: 'Abu Dhabi', status: 'converted', who: 'Aisha Khan', next: '', src: 'Phone', notes: 'Signed up. Handover sent to onboarding.', log: [{ t: 'Meeting', at: day(-6), out: 'Agreed to join, signed form.', by: 'Aisha Khan' }] },
+  { id: 5, code: 'OZV-2026-00005', name: 'Vox Lanes', branch: '', cat: 'Entertainment & Leisure', sub: 'Gaming', person: 'Nadia Farouk', role: 'Ops', phone: '054 771 0940', area: 'Al Barsha', emirate: 'Dubai', status: 'not_interested', who: 'Omar Siddiqui', next: '', src: 'Event', notes: 'Already runs an in-house loyalty scheme.', log: [{ t: 'Call', at: day(-8), out: 'Declined for now.', by: 'Omar Siddiqui' }] },
+  { id: 6, code: 'OZV-2026-00006', name: 'Bake & Co', branch: 'Marina', cat: 'Restaurants & Cafes', sub: 'Bakery', person: 'Hana Yusuf', role: 'Owner', phone: '050 662 3180', area: 'Dubai Marina', emirate: 'Dubai', status: 'new', who: 'Layla Haddad', next: day(0), src: 'Visit', notes: '', log: [] },
+  { id: 7, code: 'OZV-2026-00007', name: 'Optic House', branch: '', cat: 'Retail & Shopping', sub: 'Optical', person: 'Imran Qureshi', role: 'Manager', phone: '058 204 9911', area: 'Al Ain Mall', emirate: 'Abu Dhabi', status: 'contacted', who: 'Aisha Khan', next: day(4), src: 'Email', notes: '', log: [] }
+];
+let state = { filter: '', q: '', page: 1, sel: 1, dupSeen: false };
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const badge = s => `<span class="badge b-${s}">${STATUS[s]}</span>`;
+const svg = k => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[k]}</svg>`;
+function toast(m) { const t = $('#toast'); t.textContent = m; t.hidden = false; clearTimeout(toast.h); toast.h = setTimeout(() => t.hidden = true, 2200); }
+function go(v, id) { if (id) state.sel = id; location.hash = v; }
+
+const VIEWS = {
+  dashboard() {
+    const c = s => data.filter(d => d.status === s).length, today = day(0);
+    const due = data.filter(d => d.next && d.next <= today && !['converted', 'not_interested'].includes(d.status)).sort((a, b) => a.next.localeCompare(b.next));
+    const tiles = Object.keys(STATUS).map(s => `<button class="stat" data-go="enquiries" data-filter="${s}"><span><i class="dot" style="background:var(--s-${{ new: 'new', contacted: 'con', interested: 'int', not_interested: 'not', converted: 'cnv' }[s]}-fg)"></i>${STATUS[s]}</span><b>${c(s)}</b></button>`).join('');
+    return `<div class="head"><div><h1>Good morning, Aisha</h1><p>Here is where the vendor pipeline stands today.</p></div><button class="btn" data-go="add">+ Add enquiry</button></div>
+    <div class="stats"><div class="stat hero"><span>Total enquiries</span><b>${data.length}</b></div>${tiles}</div>
+    <div class="cols">
+      <section class="panel"><h2>Recent enquiries</h2><div class="tablewrap"><table><thead><tr><th>Business</th><th>Category</th><th>Area</th><th>Status</th><th>Assigned</th></tr></thead><tbody>
+      ${[...data].reverse().slice(0, 5).map(rowSmall).join('')}</tbody></table></div></section>
+      <section class="panel"><h2>Follow-ups due</h2>${due.length ? `<ul class="list">${due.map(d => `<li data-open="${d.id}"><span><b>${esc(d.name)}</b><br><small class="${d.next < today ? 'over' : ''}">${d.next < today ? 'Overdue · ' : 'Today · '}${fmt(d.next)}</small></span>${badge(d.status)}</li>`).join('')}</ul>` : '<p class="hint">Nothing due today.</p>'}
+      <p style="margin:12px 0 0"><a href="#followups">All follow-ups →</a></p></section>
+    </div>`;
+  },
+  enquiries() {
+    const q = state.q.toLowerCase();
+    const rows = data.filter(d => (!state.filter || d.status === state.filter) && (!q || [d.name, d.phone, d.person, d.area, d.code].join(' ').toLowerCase().includes(q)));
+    const per = 5, pages = Math.max(1, Math.ceil(rows.length / per)); state.page = Math.min(state.page, pages);
+    const chip = (v, l) => `<button class="chip" data-chip="${v}" aria-pressed="${state.filter === v}">${l}</button>`;
+    return `<div class="head"><div><h1>Vendor Enquiries</h1><p>Search, filter and open any business to see its history.</p></div><button class="btn" data-go="add">+ Add enquiry</button></div>
+    <div class="filters"><input type="search" id="q" placeholder="Search name, phone, contact, area or code" value="${esc(state.q)}" aria-label="Search enquiries"></div>
+    <div class="chips">${chip('', 'All')}${Object.entries(STATUS).map(([k, v]) => chip(k, v)).join('')}</div>
+    <section class="panel"><div class="tablewrap"><table><thead><tr><th>Business</th><th>Category</th><th>Contact</th><th>Area</th><th>Status</th><th>Assigned</th><th>Next follow-up</th></tr></thead><tbody>
+    ${rows.slice((state.page - 1) * per, state.page * per).map(d => `<tr data-open="${d.id}"><td><span class="nm">${esc(d.name)}${d.branch ? ' — ' + esc(d.branch) : ''}</span><small>${d.code}</small></td><td>${esc(d.cat)}<small>${esc(d.sub)}</small></td><td>${esc(d.person)}<small>${esc(d.phone)}</small></td><td>${esc(d.area)}, ${esc(d.emirate)}</td><td>${badge(d.status)}</td><td>${esc(d.who)}</td><td>${fmt(d.next)}</td></tr>`).join('') || '<tr><td colspan="7" class="hint" style="text-align:center;padding:28px">No enquiries match these filters.</td></tr>'}
+    </tbody></table></div><div class="pager"><span>${rows.length} result${rows.length === 1 ? '' : 's'}</span><span>Page ${state.page} of ${pages} <button class="btn ghost sm" data-page="-1">Previous</button> <button class="btn ghost sm" data-page="1">Next</button></span></div></section>`;
+  },
+  add() {
+    const opts = a => a.map(x => `<option>${x}</option>`).join('');
+    return `<div class="head"><div><h1>Add vendor enquiry</h1><p>Record a business after a call, visit or WhatsApp chat.</p></div></div>
+    <form class="form" id="f" novalidate>
+      <div id="dup"></div>
+      <section class="panel grid2"><h2 class="span2">Business</h2>
+        <div><label for="bn">Business name *</label><input id="bn" required autocomplete="off" placeholder="e.g. The Coffee Club"></div>
+        <div><label for="br">Branch name / label</label><input id="br" placeholder="e.g. Marina branch"></div>
+        <div><label for="cat">Category *</label><select id="cat" required><option value="">Select…</option>${opts(Object.keys(TAX))}</select></div>
+        <div><label for="sub">Subcategory *</label><select id="sub" disabled><option>Select a category first</option></select></div>
+      </section>
+      <section class="panel grid2"><h2 class="span2">Contact</h2>
+        <div><label for="cp">Contact person</label><input id="cp"></div>
+        <div><label for="ds">Designation</label><input id="ds" placeholder="Owner, manager…"></div>
+        <div><label for="ph">Primary phone *</label><input id="ph" type="tel" required autocomplete="off" placeholder="+971 50 123 4567"></div>
+        <div><label for="wa">WhatsApp number</label><input id="wa" type="tel"></div>
+      </section>
+      <section class="panel grid2"><h2 class="span2">Location & follow-up</h2>
+        <div><label for="em">Emirate</label><select id="em"><option>Dubai</option><option>Abu Dhabi</option><option>Sharjah</option><option>Ajman</option><option>Ras Al Khaimah</option></select></div>
+        <div><label for="ar">City / area</label><input id="ar" placeholder="e.g. Deira"></div>
+        <div><label for="as">Assigned to</label><select id="as">${opts(TEAM)}</select></div>
+        <div><label for="nx">Next follow-up date</label><input id="nx" type="date"></div>
+        <div class="span2"><label for="nt">Interest / discussion notes</label><textarea id="nt" rows="3"></textarea></div>
+      </section>
+      <div style="display:flex;gap:10px"><button class="btn" type="submit">Create enquiry</button><button class="btn ghost" type="button" data-go="enquiries">Cancel</button></div>
+    </form>
+    <p class="note">Try typing “Coffee” or the phone 050 123 4567 to see the duplicate warning. Duplicates warn; they never block saving.</p>`;
+  },
+  detail() {
+    const d = data.find(x => x.id === state.sel) || data[0];
+    const rows = [['Category', `${d.cat} › ${d.sub}`], ['Contact', `${d.person}, ${d.role}`], ['Primary phone', d.phone], ['Location', `${d.area}, ${d.emirate}`], ['Source', d.src], ['Assigned to', d.who], ['Next follow-up', fmt(d.next)]];
+    return `<div class="head"><div><a href="#enquiries">← All enquiries</a><h1>${esc(d.name)}${d.branch ? ' — ' + esc(d.branch) : ''}</h1><p>${d.code} · ${badge(d.status)}</p></div><button class="btn ghost" type="button" data-toast="Edit form opens here">Edit</button></div>
+    <div class="cols" style="grid-template-columns:minmax(0,1fr) minmax(0,1fr)">
+      <section class="panel"><h2>Details</h2><dl class="kv">${rows.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('')}</dl>${d.notes ? `<p style="margin:14px 0 0;padding-top:12px;border-top:1px solid var(--line)"><span class="hint">Discussion notes</span><br>${esc(d.notes)}</p>` : ''}</section>
+      <div style="display:grid;gap:18px;align-content:start">
+        <section class="panel"><h2>Log a follow-up</h2><form class="grid2" id="fu">
+          <div><label for="ft">Contact method</label><select id="ft"><option>Call</option><option>WhatsApp</option><option>Visit</option><option>Email</option><option>Meeting</option></select></div>
+          <div><label for="fs">Update status</label><select id="fs">${Object.entries(STATUS).map(([k, v]) => `<option value="${k}" ${k === d.status ? 'selected' : ''}>${v}</option>`).join('')}</select></div>
+          <div class="span2"><label for="fo">Outcome</label><input id="fo" placeholder="e.g. Asked to call back next week"></div>
+          <div><label for="fn">Next follow-up</label><input id="fn" type="date"></div>
+          <div style="align-self:end"><button class="btn" type="submit">Log follow-up</button></div></form></section>
+        <section class="panel"><h2>Activity timeline</h2>${d.log.length ? `<ol class="timeline">${[...d.log].reverse().map(l => `<li><b>${l.t} · ${fmt(l.at)}</b><br>${esc(l.out)}<br><small class="hint">by ${esc(l.by)}</small></li>`).join('')}</ol>` : '<p class="hint">No activity logged yet.</p>'}</section>
+      </div>
+    </div>`;
+  },
+  followups() {
+    const t = day(0), act = data.filter(d => d.next && !['converted', 'not_interested'].includes(d.status)).sort((a, b) => a.next.localeCompare(b.next));
+    const grp = (title, cls, items) => `<section class="panel" style="margin-bottom:16px"><h2 class="${cls}">${title} (${items.length})</h2>${items.length ? `<ul class="list">${items.map(d => `<li data-open="${d.id}"><span><b>${esc(d.name)}</b><br><small class="hint">${d.code} · ${esc(d.phone)} · ${esc(d.who)}</small></span><span>${badge(d.status)} &nbsp;${fmt(d.next)}</span></li>`).join('')}</ul>` : '<p class="hint">None.</p>'}</section>`;
+    return `<div class="head"><div><h1>Follow-ups</h1><p>Who to contact next, oldest first.</p></div></div><div style="max-width:860px">
+    ${grp('Overdue', 'over', act.filter(d => d.next < t))}${grp('Due today', '', act.filter(d => d.next === t))}${grp('Upcoming', '', act.filter(d => d.next > t))}</div>`;
+  },
+  categories() {
+    return `<div class="head"><div><h1>Categories</h1><p>Used on every enquiry. Deactivate instead of deleting so history stays valid.</p></div><button class="btn" data-toast="New category form opens here">+ Add category</button></div><div style="max-width:780px">
+    ${Object.entries(TAX).map(([c, s], i) => `<div class="cat"><h3>${c}<span><button class="btn ghost sm" data-toast="Moved">↑</button> <button class="btn ghost sm" data-toast="Moved">↓</button> <button class="btn ghost sm" data-toast="Renamed">Rename</button></span></h3><div class="subs">${s.map((x, j) => `<span class="sub-pill ${i === 4 && j === 2 ? 'off' : ''}">${x}</span>`).join('')}<span class="sub-pill" style="background:transparent;border:1px dashed var(--line);color:var(--muted)">+ subcategory</span></div></div>`).join('')}</div>`;
+  },
+  team() {
+    const m = [['Aisha Khan', 'aisha@ozfero.ae', 'Administrator', 1], ['Omar Siddiqui', 'omar@ozfero.ae', 'Team member', 1], ['Layla Haddad', 'layla@ozfero.ae', 'Team member', 1], ['Yusuf Amin', 'yusuf@ozfero.ae', 'Team member', 0]];
+    return `<div class="head"><div><h1>Team</h1><p>Add people, set roles and remove access when someone leaves.</p></div><button class="btn" data-toast="Add user form opens here">+ Add user</button></div>
+    <section class="panel" style="max-width:820px">${m.map(([n, e, r, a]) => `<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)"><div class="avatar" style="background:var(--brand-soft);color:var(--brand)">${n.split(' ').map(x => x[0]).join('')}</div><div style="flex:1;min-width:160px"><b>${n}</b><br><small class="hint">${e}</small></div><span class="badge ${a ? 'b-converted' : 'b-not_interested'}">${a ? 'Active' : 'Deactivated'}</span><span class="hint">${r}</span></div>`).join('')}</section>`;
+  },
+  settings() {
+    return `<div class="head"><div><h1>Settings</h1><p>Your profile and password.</p></div></div><section class="panel form" style="max-width:460px"><div><label for="dn">Display name</label><input id="dn" value="Aisha Khan"></div><div><label for="pw">New password (min. 10 characters)</label><input id="pw" type="password" autocomplete="new-password"></div><div><button class="btn" data-toast="Saved">Save</button></div></section>`;
+  }
+};
+function rowSmall(d) { return `<tr data-open="${d.id}"><td><span class="nm">${esc(d.name)}</span><small>${d.code}</small></td><td>${esc(d.cat)}</td><td>${esc(d.area)}</td><td>${badge(d.status)}</td><td>${esc(d.who)}</td></tr>`; }
+
+function render() {
+  const v = (location.hash.slice(1) || 'dashboard'), key = VIEWS[v] ? v : 'dashboard';
+  $('#view').innerHTML = VIEWS[key]();
+  $('#nav').innerHTML = NAV.map(([k, l, tag]) => `<button type="button" data-go="${k}" ${(k === key || (k === 'enquiries' && (key === 'add' || key === 'detail'))) ? 'aria-current="page"' : ''}>${svg(k)}${l}${tag ? `<span class="tag">${tag}</span>` : ''}</button>`).join('');
+  window.scrollTo(0, 0);
+}
+addEventListener('hashchange', render);
+
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-go],[data-open],[data-chip],[data-page],[data-toast]');
+  if (!t) return;
+  if (t.dataset.toast) return toast(t.dataset.toast);
+  if (t.dataset.open) return go('detail', +t.dataset.open);
+  if (t.dataset.chip !== undefined) { state.filter = t.dataset.chip; state.page = 1; return render(); }
+  if (t.dataset.page) { state.page = Math.max(1, state.page + +t.dataset.page); return render(); }
+  if (t.dataset.filter !== undefined) state.filter = t.dataset.filter;
+  go(t.dataset.go);
+});
+document.addEventListener('input', e => {
+  if (e.target.id === 'q') { state.q = e.target.value; state.page = 1; const p = e.target.selectionStart; render(); const q = $('#q'); q.focus(); q.setSelectionRange(p, p); }
+  if (e.target.id === 'bn' || e.target.id === 'ph') dupCheck();
+});
+document.addEventListener('change', e => {
+  if (e.target.id === 'cat') { const s = $('#sub'), l = TAX[e.target.value] || []; s.disabled = !l.length; s.innerHTML = l.length ? '<option value="">Select…</option>' + l.map(x => `<option>${x}</option>`).join('') : '<option>Select a category first</option>'; }
+});
+function dupCheck() {
+  const n = $('#bn').value.trim().toLowerCase(), p = $('#ph').value.replace(/\D/g, '').replace(/^(00)?971/, '').replace(/^0/, '');
+  const hits = data.filter(d => (p.length >= 7 && d.phone.replace(/\D/g, '').replace(/^0/, '') === p) || (n.length >= 3 && d.name.toLowerCase().includes(n)));
+  $('#dup').innerHTML = hits.length ? `<div class="warn" role="status"><b>Possible duplicate${hits.length > 1 ? 's' : ''} found. Review before saving:</b><ul style="margin:8px 0 0;padding-left:18px">${hits.map(d => `<li><a href="#detail" data-open="${d.id}">${esc(d.name)}${d.branch ? ' — ' + esc(d.branch) : ''}</a> · ${d.code} · ${esc(d.area)} · ${esc(d.phone)} · ${esc(d.who)} ${badge(d.status)}</li>`).join('')}</ul><div class="hint" style="color:inherit;opacity:.85">You can still save this as a separate record, for example another branch.</div></div>` : '';
+}
+document.addEventListener('submit', e => {
+  e.preventDefault();
+  if (e.target.id === 'f') {
+    const need = ['bn', 'cat', 'sub', 'ph'].filter(id => !$('#' + id).value.trim() || $('#' + id).value === 'Select…');
+    if (need.length) { $('#' + need[0]).focus(); return toast('Fill the required fields marked *'); }
+    const id = data.length + 1;
+    data.push({ id, code: 'OZV-2026-' + String(id).padStart(5, '0'), name: $('#bn').value, branch: $('#br').value, cat: $('#cat').value, sub: $('#sub').value, person: $('#cp').value || '—', role: $('#ds').value || '—', phone: $('#ph').value, area: $('#ar').value || '—', emirate: $('#em').value, status: 'new', who: $('#as').value, next: $('#nx').value, src: 'Visit', notes: $('#nt').value, log: [] });
+    toast('Enquiry created'); go('detail', id);
+  }
+  if (e.target.id === 'fu') {
+    const d = data.find(x => x.id === state.sel);
+    d.log.push({ t: $('#ft').value, at: day(0), out: $('#fo').value || 'No outcome recorded.', by: 'Aisha Khan' });
+    d.status = $('#fs').value; d.next = $('#fn').value; toast('Follow-up saved'); render();
+  }
+});
+$('#theme').addEventListener('click', () => {
+  const r = document.documentElement, dark = r.dataset.theme ? r.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  r.dataset.theme = dark ? 'light' : 'dark';
+});
+render();
+</script>
