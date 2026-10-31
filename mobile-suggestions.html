@@ -1,0 +1,209 @@
+<title>Ozfero Mobile Options</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=DM+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: two rows of phone mockups (status filters, then navigation); each phone is a live prototype. */
+:root {
+  --bg: #f3f7ef; --surface: #ffffff; --fg: #12261a; --muted: #5b6e60; --line: #dde7d8;
+  --brand: #2f8f0f; --brand-ink: #ffffff; --brand-soft: #e6f4dc; --lime: #c6ff00;
+  --rail-a: #3f8f12; --rail-b: #0a3b26; --stage: #e4eddc; --frame: #12261a;
+  --s-new: #44564a; --s-con: #1d5aa6; --s-int: #7a5600; --s-not: #a12b2b; --s-cnv: #1d6b0c;
+  --btn-a: #52b51c; --btn-b: #2a7d12; --btn-fg: #ffffff; --scrim: #00000066;
+  --display: "Outfit", "Segoe UI", system-ui, sans-serif; --body: "DM Sans", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #07140d; --surface: #0e2217; --fg: #e8f5e0; --muted: #96ad9b; --line: #1d3a28;
+    --brand: #8bd82a; --brand-ink: #07140d; --brand-soft: #16331f; --stage: #0b1b11; --frame: #02080a;
+    --s-new: #b6c9bb; --s-con: #9cc7f5; --s-int: #f2d37a; --s-not: #f3a3a3; --s-cnv: #a9ec8c;
+    --btn-a: #b8f04a; --btn-b: #6fc21f; --btn-fg: #07140d; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #07140d; --surface: #0e2217; --fg: #e8f5e0; --muted: #96ad9b; --line: #1d3a28;
+  --brand: #8bd82a; --brand-ink: #07140d; --brand-soft: #16331f; --stage: #0b1b11; --frame: #02080a;
+  --s-new: #b6c9bb; --s-con: #9cc7f5; --s-int: #f2d37a; --s-not: #f3a3a3; --s-cnv: #a9ec8c;
+  --btn-a: #b8f04a; --btn-b: #6fc21f; --btn-fg: #07140d; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 14px/1.5 var(--body); padding-block: 28px 60px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: var(--display); margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+button { font: inherit; color: inherit; cursor: pointer; }
+.wrap { max-width: 1180px; margin: 0 auto; }
+.intro h1 { font-size: 30px; font-weight: 700; } .intro p { color: var(--muted); max-width: 640px; margin: 6px 0 0; }
+section.group { margin-top: 38px; }
+section.group > h2 { font-size: 20px; } section.group > p { color: var(--muted); margin: 4px 0 18px; max-width: 700px; }
+.row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+.opt { min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.cap { width: 100%; max-width: 300px; }
+.cap b { font-family: var(--display); font-size: 15px; } .cap small { display: block; color: var(--muted); font-size: 12.5px; line-height: 1.4; }
+.pick { display: inline-block; font-size: 11px; font-weight: 700; background: var(--lime); color: #0a3b26; border-radius: 99px; padding: 1px 8px; margin-left: 6px; vertical-align: 2px; }
+
+/* phone mockup */
+.phone { width: 300px; max-width: 100%; height: 560px; border-radius: 34px; background: var(--frame); padding: 8px; box-shadow: 0 14px 36px #0003; }
+.screen { position: relative; height: 100%; border-radius: 27px; overflow: hidden; background: var(--bg); display: flex; flex-direction: column; }
+.statusbar { display: flex; justify-content: space-between; padding: 7px 16px 3px; font-size: 11px; font-weight: 600; background: var(--bg); }
+.topbar { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: linear-gradient(160deg, var(--rail-a), var(--rail-b)); color: #fff; }
+.topbar .logo { width: 34px; height: 34px; border-radius: 10px; background: linear-gradient(145deg, #7bd63a, #0f5a24); display: grid; place-items: center; font: 800 12px var(--display); box-shadow: inset 0 0 0 1px #ffffff40; }
+.topbar b { font-family: var(--display); font-size: 15px; flex: 1; }
+.ibtn { width: 34px; height: 34px; border-radius: 10px; border: 0; background: #ffffff22; color: #fff; display: grid; place-items: center; }
+.ibtn svg, .tab svg, .ico { width: 20px; height: 20px; }
+.body { flex: 1; min-height: 0; overflow-y: auto; padding: 14px; }
+.body h3 { font-size: 20px; margin-bottom: 2px; } .body .sub { color: var(--muted); font-size: 12px; margin-bottom: 12px; }
+.add { display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 10px; padding: 8px 14px; font-weight: 700; font-size: 13px; background: linear-gradient(135deg, var(--btn-a), var(--btn-b)); color: var(--btn-fg); }
+.rowhead { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 12px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; margin-bottom: 8px; display: flex; justify-content: space-between; gap: 8px; font-size: 13px; }
+.card small { display: block; color: var(--muted); font-size: 11.5px; }
+.pill { font-size: 11px; font-weight: 700; border-radius: 99px; padding: 1px 9px; height: fit-content; white-space: nowrap; background: var(--brand-soft); }
+.pill[data-s="new"] { color: var(--s-new); } .pill[data-s="contacted"] { color: var(--s-con); } .pill[data-s="interested"] { color: var(--s-int); }
+.pill[data-s="not_interested"] { color: var(--s-not); } .pill[data-s="converted"] { color: var(--s-cnv); }
+
+/* status filter options */
+.chips-a { display: flex; gap: 6px; overflow-x: auto; margin: 0 -14px 12px; padding: 2px 14px 6px; scrollbar-width: none; -webkit-mask-image: linear-gradient(90deg, #000 88%, transparent); mask-image: linear-gradient(90deg, #000 88%, transparent); }
+.chips-a::-webkit-scrollbar { display: none; }
+.chip { flex: none; border: 1px solid var(--line); background: var(--surface); border-radius: 99px; padding: 6px 12px; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; }
+.chip i { font-style: normal; font-size: 11px; color: var(--muted); font-weight: 600; }
+.chip[aria-pressed="true"] { background: var(--brand); border-color: var(--brand); color: var(--brand-ink); font-weight: 700; }
+.chip[aria-pressed="true"] i { color: inherit; opacity: .85; }
+.dd { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 8px; border: 1px solid var(--line); background: var(--surface); border-radius: 12px; padding: 10px 12px; margin-bottom: 12px; font-weight: 600; }
+.dd span { color: var(--muted); font-weight: 400; }
+.tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin-bottom: 12px; }
+.tile { border: 1px solid var(--line); background: var(--surface); border-radius: 12px; padding: 7px 4px; text-align: center; font-size: 11px; line-height: 1.2; }
+.tile b { display: block; font: 700 17px var(--display); }
+.tile[aria-pressed="true"] { background: var(--brand); border-color: var(--brand); color: var(--brand-ink); }
+
+/* sheets and drawer */
+.scrim { position: absolute; inset: 0; background: var(--scrim); opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 5; }
+.open > .scrim { opacity: 1; pointer-events: auto; }
+.sheet { position: absolute; left: 0; right: 0; bottom: 0; background: var(--surface); border-radius: 22px 22px 0 0; padding: 10px 14px 18px; transform: translateY(105%); transition: transform .25s; z-index: 6; }
+.open > .sheet { transform: none; }
+.sheet::before { content: ""; display: block; width: 38px; height: 4px; border-radius: 4px; background: var(--line); margin: 0 auto 12px; }
+.sheet h4 { margin: 0 0 6px; font: 700 15px var(--display); }
+.opt-row { width: 100%; display: flex; align-items: center; gap: 12px; border: 0; background: transparent; padding: 11px 6px; border-radius: 10px; text-align: left; }
+.opt-row:hover { background: var(--brand-soft); }
+.opt-row em { margin-left: auto; font-style: normal; color: var(--muted); font-size: 12px; }
+.opt-row .adm { margin-left: auto; font-size: 10px; font-weight: 700; background: var(--lime); color: #0a3b26; border-radius: 99px; padding: 0 7px; }
+.opt-row.sel { color: var(--brand); font-weight: 700; }
+.danger { color: #b3261e; } :root[data-theme="dark"] .danger { color: #ff8f86; }
+.drawer { position: absolute; top: 0; bottom: 0; left: 0; width: 80%; background: var(--surface); transform: translateX(-105%); transition: transform .25s; z-index: 6; display: flex; flex-direction: column; }
+.open > .drawer { transform: none; }
+.drawer .dh { background: linear-gradient(160deg, var(--rail-a), var(--rail-b)); color: #fff; padding: 22px 16px 14px; }
+.drawer .who { display: flex; gap: 10px; align-items: center; margin-top: 12px; }
+.avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--lime); color: #0a3b26; display: grid; place-items: center; font: 700 13px var(--display); }
+.drawer small { opacity: .8; font-size: 11px; display: block; }
+.drawer nav { padding: 8px; flex: 1; overflow-y: auto; }
+.grp { font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); padding: 10px 8px 2px; font-weight: 700; }
+
+/* bottom tab bar */
+.tabbar { display: grid; grid-template-columns: repeat(5, 1fr); align-items: end; background: var(--surface); border-top: 1px solid var(--line); padding: 6px 4px 10px; position: relative; z-index: 4; }
+.tab { border: 0; background: transparent; display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 10.5px; color: var(--muted); padding: 4px 0; }
+.tab[aria-current="page"] { color: var(--brand); font-weight: 700; }
+.fab { width: 50px; height: 50px; border-radius: 16px; margin: -22px auto 0; border: 0; background: linear-gradient(135deg, var(--btn-a), var(--btn-b)); color: var(--btn-fg); display: grid; place-items: center; box-shadow: 0 8px 18px #2a7d1255; }
+.fab svg { width: 24px; height: 24px; }
+.scrollnav { display: flex; gap: 4px; overflow-x: auto; background: linear-gradient(160deg, var(--rail-a), var(--rail-b)); padding: 0 10px 10px; scrollbar-width: none; }
+.scrollnav button { flex: none; border: 0; background: transparent; color: #e6f7d8; padding: 7px 10px; border-radius: 10px; font-size: 13px; display: flex; gap: 6px; align-items: center; white-space: nowrap; }
+.scrollnav button[aria-current="page"] { background: #fff; color: #0d4a1c; font-weight: 700; }
+.verdict { margin-top: 30px; padding: 18px; border: 1px solid var(--line); background: var(--surface); border-radius: 14px; }
+.verdict h2 { font-size: 18px; margin-bottom: 8px; } .verdict ul { margin: 0; padding-left: 18px; } .verdict li { margin: 4px 0; }
+@media (max-width: 1000px) { .row { grid-template-columns: minmax(0, 1fr); justify-items: center; } }
+@media (prefers-reduced-motion: reduce) { .sheet, .drawer, .scrim { transition: none; } }
+</style>
+
+<div class="wrap">
+  <header class="intro">
+    <h1>Mobile status filters and menu</h1>
+    <p>Three options for each, as live phone prototypes. Tap them: chips select, sheets open, and the drawer slides in. Sample data only.</p>
+  </header>
+
+  <section class="group" aria-labelledby="g1">
+    <h2 id="g1">1. Status filters on the enquiries list</h2>
+    <p>Today the six chips wrap into three lines and push the list below the fold. These keep the filter to one line.</p>
+    <div class="row" id="filters"></div>
+  </section>
+
+  <section class="group" aria-labelledby="g2">
+    <h2 id="g2">2. Main menu</h2>
+    <p>Today the menu is a sideways-scrolling strip with Sign out hidden at the end. These put daily actions in reach of the thumb.</p>
+    <div class="row" id="menus"></div>
+  </section>
+
+  <aside class="verdict">
+    <h2>Recommended combination</h2>
+    <ul>
+      <li><b>Filters: option A.</b> One swipeable row with counts. It is familiar, shows the active filter at a glance, and costs one line of height instead of three.</li>
+      <li><b>Menu: option A, the bottom tab bar.</b> Dashboard, Enquiries, a center + to add an enquiry, Follow-ups, and a More sheet for Categories, Team, Settings, theme and Sign out. Add enquiry is the most frequent action and becomes one tap.</li>
+      <li>Admin-only items stay inside More with an Admin tag, so team members never see them.</li>
+    </ul>
+  </aside>
+</div>
+
+<script>
+const I = {
+  home: 'M3 12 12 4l9 8v8a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z', list: 'M4 5h16M4 12h16M4 19h10',
+  clock: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3 2', grid: 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM17 13v7M13.5 16.5h7',
+  team: 'M9 4.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7zM2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6.5 6.5 0 0 1 3.5 5.5',
+  cog: 'M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2',
+  plus: 'M12 5v14M5 12h14', more: 'M5 12h.01M12 12h.01M19 12h.01', menu: 'M4 7h16M4 12h16M4 17h16',
+  moon: 'M21 13a8 8 0 1 1-10-10 6.5 6.5 0 0 0 10 10z', out: 'M10 4H5v16h5M15 8l4 4-4 4M19 12H9', chev: 'm6 9 6 6 6-6', close: 'M6 6l12 12M18 6 6 18'
+};
+const ic = (k, c = '') => `<svg class="ico ${c}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${I[k]}"/></svg>`;
+const ST = [['', 'All', 7], ['new', 'New', 2], ['contacted', 'Contacted', 2], ['interested', 'Interested', 1], ['not_interested', 'Not Interested', 1], ['converted', 'Converted', 1]];
+const LIST = [['The Coffee Club', 'OZV-2026-00001 · Deira', 'interested'], ['Glow Studio', 'OZV-2026-00002 · Al Nahda', 'contacted'], ['IronWorks Gym', 'OZV-2026-00003 · JLT', 'new'], ['Zara Auto Care', 'OZV-2026-00004 · Mussafah', 'converted'], ['Vox Lanes', 'OZV-2026-00005 · Al Barsha', 'not_interested'], ['Bake & Co', 'OZV-2026-00006 · Marina', 'new'], ['Optic House', 'OZV-2026-00007 · Al Ain', 'contacted']];
+const label = s => (ST.find(x => x[0] === s) || ST[0])[1];
+const cards = f => LIST.filter(x => !f || x[2] === f).map(x => `<div class="card"><div><b>${x[0]}</b><small>${x[1]}</small></div><span class="pill" data-s="${x[2]}">${label(x[2])}</span></div>`).join('');
+const phone = (inner, cls = '') => `<div class="phone"><div class="screen ${cls}"><div class="statusbar"><span>9:41</span><span>●●● ▮</span></div>${inner}</div></div>`;
+const head = `<div class="rowhead"><div><h3>Vendor Enquiries</h3><div class="sub">7 results</div></div><button class="add">${ic('plus')} Add</button></div>`;
+const cap = (t, d, pick) => `<div class="cap"><b>${t}</b>${pick ? '<span class="pick">Recommended</span>' : ''}<small>${d}</small></div>`;
+
+/* ---------- filter options ---------- */
+const F = { a: '', b: '', c: '' };
+function filters() {
+  const chipsA = `<div class="chips-a" role="group" aria-label="Status filter">${ST.map(s => `<button class="chip" data-f="a:${s[0]}" aria-pressed="${F.a === s[0]}">${s[1]} <i>${s[2]}</i></button>`).join('')}</div>`;
+  const ddB = `<button class="dd" data-sheet="b">Status: <b style="margin-right:auto;margin-left:4px">${label(F.b)}</b> ${ic('chev')}</button>`;
+  const sheetB = `<div class="scrim" data-close></div><div class="sheet" role="dialog" aria-label="Choose status"><h4>Filter by status</h4>${ST.map(s => `<button class="opt-row ${F.b === s[0] ? 'sel' : ''}" data-f="b:${s[0]}">${s[1]}<em>${s[2]}</em></button>`).join('')}</div>`;
+  const tilesC = `<div class="tiles" role="group" aria-label="Status filter">${ST.map(s => `<button class="tile" data-f="c:${s[0]}" aria-pressed="${F.c === s[0]}"><b>${s[2]}</b>${s[1]}</button>`).join('')}</div>`;
+  const bar = `<div class="topbar"><div class="logo">Oz</div><b>Vendor Desk</b><button class="ibtn" aria-label="Menu">${ic('menu')}</button></div>`;
+  $('#filters').innerHTML = [
+    ['A. One swipeable row with counts', 'Single line, scrolls sideways, fades at the edge. Counts show the pipeline without opening anything.', 1, phone(bar + `<div class="body">${head}${chipsA}${cards(F.a)}</div>`)],
+    ['B. Status dropdown with a bottom sheet', 'Smallest footprint. Good if filters grow later, but hides the choices behind a tap.', 0, phone(bar + `<div class="body">${head}${ddB}${cards(F.b)}</div>` + sheetB, SHEET.b ? 'open' : '')],
+    ['C. Count tiles in a 3 by 2 grid', 'Doubles as a mini dashboard. Uses more height, two rows, but never scrolls sideways.', 0, phone(bar + `<div class="body">${head}${tilesC}${cards(F.c)}</div>`)]
+  ].map(o => `<div class="opt">${o[3]}${cap(o[0], o[1], o[2])}</div>`).join('');
+}
+const SHEET = { b: false, more: false, drawer: false };
+
+/* ---------- menu options ---------- */
+let TAB = 'Enquiries';
+function menus() {
+  const tabs = [['Dashboard', 'home'], ['Enquiries', 'list'], null, ['Follow-ups', 'clock'], ['More', 'more']];
+  const tab = (t) => t ? `<button class="tab" data-tab="${t[0]}" ${TAB === t[0] ? 'aria-current="page"' : ''}>${ic(t[1])}${t[0]}</button>` : `<div><button class="fab" aria-label="Add enquiry">${ic('plus')}</button></div>`;
+  const moreSheet = `<div class="scrim" data-close></div><div class="sheet" role="dialog" aria-label="More"><h4>More</h4>
+    <button class="opt-row">${ic('grid')} Categories <span class="adm">Admin</span></button>
+    <button class="opt-row">${ic('team')} Team <span class="adm">Admin</span></button>
+    <button class="opt-row">${ic('cog')} Settings</button>
+    <button class="opt-row">${ic('moon')} Dark mode</button>
+    <button class="opt-row danger">${ic('out')} Sign out</button></div>`;
+  const A = phone(`<div class="topbar"><div class="logo">Oz</div><b>${TAB}</b></div><div class="body"><h3>${TAB}</h3><div class="sub">Tap More to see the sheet</div>${cards('')}</div><div class="tabbar">${tabs.map(tab).join('')}</div>${moreSheet}`, SHEET.more ? 'open' : '');
+  const drawer = `<div class="scrim" data-close></div><aside class="drawer" aria-label="Menu"><div class="dh"><div class="logo" style="width:40px;height:40px;border-radius:12px;background:linear-gradient(145deg,#7bd63a,#0f5a24);display:grid;place-items:center;font:800 14px var(--display)">Oz</div><div class="who"><div class="avatar">AK</div><div><b>Aisha Khan</b><small>Administrator</small></div></div></div>
+    <nav><div class="grp">Work</div><button class="opt-row sel">${ic('home')} Dashboard</button><button class="opt-row">${ic('list')} Vendor Enquiries</button><button class="opt-row">${ic('clock')} Follow-ups</button>
+    <div class="grp">Admin</div><button class="opt-row">${ic('grid')} Categories</button><button class="opt-row">${ic('team')} Team</button>
+    <div class="grp">Account</div><button class="opt-row">${ic('cog')} Settings</button><button class="opt-row">${ic('moon')} Dark mode</button><button class="opt-row danger">${ic('out')} Sign out</button></nav></aside>`;
+  const B = phone(`<div class="topbar"><button class="ibtn" data-sheet="drawer" aria-label="Open menu">${ic('menu')}</button><b>Vendor Desk</b><button class="ibtn" aria-label="Add enquiry">${ic('plus')}</button></div><div class="body"><h3>Dashboard</h3><div class="sub">Tap the menu icon</div>${cards('')}</div>${drawer}`, SHEET.drawer ? 'open' : '');
+  const C = phone(`<div class="topbar" style="padding-bottom:6px"><div class="logo">Oz</div><b>Vendor Desk</b><button class="ibtn" aria-label="Sign out">${ic('out')}</button></div><div class="scrollnav">${[['Dashboard', 'home'], ['Enquiries', 'list'], ['Follow-ups', 'clock'], ['Categories', 'grid'], ['Team', 'team'], ['Settings', 'cog']].map(t => `<button ${t[0] === 'Enquiries' ? 'aria-current="page"' : ''}>${ic(t[1])}${t[0]}</button>`).join('')}</div><div class="body">${head}${cards('')}</div>`);
+  $('#menus').innerHTML = [
+    ['A. Bottom tab bar with a More sheet', 'Thumb-friendly. Add enquiry sits in the center. Admin pages, theme and Sign out live in More.', 1, A],
+    ['B. Hamburger with a side drawer', 'Cleanest screen, grouped menu with your name and role. Every action is two taps away.', 0, B],
+    ['C. Current strip, tidied', 'Smallest change: icons added, Sign out moved to the top bar. Still hides items off-screen to the right.', 0, C]
+  ].map(o => `<div class="opt">${o[3]}${cap(o[0], o[1], o[2])}</div>`).join('');
+}
+function $(s) { return document.querySelector(s); }
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-f],[data-sheet],[data-close],[data-tab]');
+  if (!t) return;
+  if (t.dataset.f) { const [k, v] = t.dataset.f.split(':'); F[k] = v; if (k === 'b') SHEET.b = false; filters(); }
+  else if (t.dataset.tab) { if (t.dataset.tab === 'More') SHEET.more = true; else TAB = t.dataset.tab; menus(); }
+  else if (t.dataset.sheet) { SHEET[t.dataset.sheet] = true; t.dataset.sheet === 'b' ? filters() : menus(); }
+  else if (t.dataset.close !== undefined) { SHEET.b = SHEET.more = SHEET.drawer = false; filters(); menus(); }
+});
+filters(); menus();
+</script>

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { DM_Sans, Outfit } from "next/font/google";
 import "./globals.css";
 
@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
   icons: { icon: "/ozfero-icon.png" },
 };
+
+export const viewport: Viewport = { viewportFit: "cover" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

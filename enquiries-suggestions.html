@@ -1,0 +1,203 @@
+<title>Ozfero Enquiries Mobile</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=DM+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: two groups of three tappable phone mockups (header and status, then filters), then a recommendation. */
+:root {
+  --bg: #f3f7ef; --surface: #ffffff; --fg: #12261a; --muted: #5b6e60; --line: #dde7d8; --inputline: #b9c9b4;
+  --brand: #2f8f0f; --brand-ink: #ffffff; --brand-soft: #e6f4dc; --lime: #c6ff00;
+  --rail-a: #3f8f12; --rail-b: #0a3b26; --frame: #12261a;
+  --c-new: #6b7d70; --c-con: #2f78d0; --c-int: #d99a00; --c-not: #d04a4a; --c-cnv: #2f8f0f;
+  --btn-a: #52b51c; --btn-b: #2a7d12; --btn-fg: #ffffff; --scrim: #00000066; --danger: #b3261e;
+  --display: "Outfit", "Segoe UI", system-ui, sans-serif; --body: "DM Sans", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #07140d; --surface: #0e2217; --fg: #e8f5e0; --muted: #96ad9b; --line: #1d3a28; --inputline: #3a5b46;
+    --brand: #8bd82a; --brand-ink: #07140d; --brand-soft: #16331f; --frame: #02080a;
+    --c-new: #9bb0a0; --c-con: #7db4f2; --c-int: #f2c24d; --c-not: #f08a8a; --c-cnv: #8bd82a;
+    --btn-a: #b8f04a; --btn-b: #6fc21f; --btn-fg: #07140d; --danger: #ff8f86; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #07140d; --surface: #0e2217; --fg: #e8f5e0; --muted: #96ad9b; --line: #1d3a28; --inputline: #3a5b46;
+  --brand: #8bd82a; --brand-ink: #07140d; --brand-soft: #16331f; --frame: #02080a;
+  --c-new: #9bb0a0; --c-con: #7db4f2; --c-int: #f2c24d; --c-not: #f08a8a; --c-cnv: #8bd82a;
+  --btn-a: #b8f04a; --btn-b: #6fc21f; --btn-fg: #07140d; --danger: #ff8f86; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 14px/1.5 var(--body); padding-block: 28px 60px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3, h4 { font-family: var(--display); margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+.wrap { max-width: 1180px; margin: 0 auto; }
+.intro h1 { font-size: 30px; font-weight: 700; } .intro p { color: var(--muted); max-width: 680px; margin: 6px 0 0; }
+section.group { margin-top: 38px; } section.group > h2 { font-size: 20px; }
+section.group > p { color: var(--muted); margin: 4px 0 18px; max-width: 720px; }
+.row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+.opt { min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.cap { width: 100%; max-width: 300px; } .cap b { font-family: var(--display); font-size: 15px; }
+.cap small { display: block; color: var(--muted); font-size: 12.5px; line-height: 1.4; }
+.pick { display: inline-block; font-size: 11px; font-weight: 700; background: var(--lime); color: #0a3b26; border-radius: 99px; padding: 1px 8px; margin-left: 6px; vertical-align: 2px; }
+
+.phone { width: 300px; max-width: 100%; height: 600px; border-radius: 34px; background: var(--frame); padding: 8px; box-shadow: 0 14px 36px #0003; }
+.screen { position: relative; height: 100%; border-radius: 27px; overflow: hidden; background: var(--bg); display: flex; flex-direction: column; }
+.statusbar { display: flex; justify-content: space-between; padding: 7px 16px 3px; font-size: 11px; font-weight: 600; }
+.topbar { display: flex; align-items: center; gap: 10px; padding: 9px 14px; background: linear-gradient(160deg, var(--rail-a), var(--rail-b)); color: #fff; }
+.topbar .logo { width: 30px; height: 30px; border-radius: 9px; background: linear-gradient(145deg, #7bd63a, #0f5a24); display: grid; place-items: center; font: 800 11px var(--display); }
+.topbar b { font-family: var(--display); font-size: 15px; }
+.body { flex: 1; min-height: 0; overflow-y: auto; padding: 12px 14px; }
+.ico { width: 18px; height: 18px; flex: none; }
+.ph1 { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 10px; }
+.ph1 h3 { font-size: 20px; } .ph1 span { color: var(--muted); font-size: 12px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 9px 12px; margin-bottom: 7px; display: flex; justify-content: space-between; gap: 8px; font-size: 13px; }
+.card small { display: block; color: var(--muted); font-size: 11.5px; }
+.pill { font-size: 11px; font-weight: 700; border-radius: 99px; padding: 1px 9px; height: fit-content; white-space: nowrap; background: var(--brand-soft); }
+.tabbar { height: 54px; border-top: 1px solid var(--line); background: var(--surface); display: grid; grid-template-columns: repeat(5, 1fr); place-items: center; color: var(--muted); font-size: 10px; }
+.tabbar .fab { width: 42px; height: 42px; border-radius: 14px; margin-top: -18px; display: grid; place-items: center; background: linear-gradient(135deg, var(--btn-a), var(--btn-b)); color: var(--btn-fg); font-size: 22px; }
+
+.search { display: flex; gap: 8px; margin-bottom: 8px; }
+.field { flex: 1; min-width: 0; border: 1px solid var(--inputline); background: var(--surface); border-radius: 12px; padding: 9px 12px; width: 100%; }
+.fbtn { flex: none; display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--inputline); background: var(--surface); border-radius: 12px; padding: 0 12px; font-weight: 600; }
+.fbtn em { font-style: normal; background: var(--brand); color: var(--brand-ink); border-radius: 99px; font-size: 11px; min-width: 18px; text-align: center; padding: 0 5px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.tag { display: inline-flex; align-items: center; gap: 4px; background: var(--brand-soft); border: 0; border-radius: 99px; padding: 3px 4px 3px 10px; font-size: 12px; font-weight: 600; }
+.tag span { width: 16px; height: 16px; border-radius: 50%; display: grid; place-items: center; background: #00000018; font-size: 11px; }
+.clear { border: 0; background: transparent; color: var(--brand); font-weight: 700; font-size: 12px; padding: 3px 4px; }
+
+/* status options */
+.tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin-bottom: 10px; }
+.tile { border: 1px solid var(--line); background: var(--surface); border-radius: 12px; padding: 6px 8px; text-align: left; display: flex; align-items: center; justify-content: space-between; gap: 4px; font-size: 11.5px; line-height: 1.2; }
+.tile b { font: 700 16px var(--display); }
+.tile[aria-pressed="true"] { background: var(--brand); border-color: var(--brand); color: var(--brand-ink); }
+.dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 5px; }
+.tile .lbl { display: flex; align-items: center; min-width: 0; }
+.pipe { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; margin-bottom: 10px; }
+.bar { display: flex; height: 10px; border-radius: 6px; overflow: hidden; gap: 2px; margin-bottom: 8px; }
+.bar i { display: block; min-width: 4px; }
+.legend { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
+.lg { display: flex; align-items: center; justify-content: space-between; border: 0; background: transparent; padding: 5px 4px; border-radius: 8px; font-size: 12.5px; text-align: left; }
+.lg[aria-pressed="true"] { background: var(--brand-soft); font-weight: 700; }
+.lg b { font-variant-numeric: tabular-nums; }
+.sumcard { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 8px; border: 1px solid var(--line); background: var(--surface); border-radius: 14px; padding: 10px 12px; margin-bottom: 10px; text-align: left; }
+.sumcard .big { font: 700 22px var(--display); margin-right: 6px; }
+.sumcard .chev { transition: transform .2s; } .sumcard[aria-expanded="true"] .chev { transform: rotate(180deg); }
+
+/* filter UIs */
+.panel { border: 1px solid var(--line); background: var(--surface); border-radius: 14px; padding: 10px; margin-bottom: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.panel .span { grid-column: 1 / -1; }
+.panel label, .sheet label { font-size: 11px; font-weight: 700; color: var(--muted); display: block; margin-bottom: 2px; }
+.sel { width: 100%; border: 1px solid var(--inputline); background: var(--surface); border-radius: 10px; padding: 7px 8px; font-size: 13px; }
+.qrow { display: flex; gap: 6px; overflow-x: auto; margin: 0 -14px 10px; padding: 2px 14px 4px; scrollbar-width: none; }
+.qrow::-webkit-scrollbar { display: none; }
+.q { flex: none; display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--inputline); background: var(--surface); border-radius: 99px; padding: 6px 11px; font-size: 13px; }
+.q.on { background: var(--brand); border-color: var(--brand); color: var(--brand-ink); font-weight: 700; }
+.apply { display: flex; gap: 8px; margin-top: 10px; }
+.btn { flex: 1; border: 0; border-radius: 12px; padding: 10px; font-weight: 700; background: linear-gradient(135deg, var(--btn-a), var(--btn-b)); color: var(--btn-fg); }
+.btn.ghost { flex: none; background: var(--surface); color: var(--fg); border: 1px solid var(--inputline); padding: 10px 16px; }
+.scrim { position: absolute; inset: 0; background: var(--scrim); opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 5; }
+.open > .scrim { opacity: 1; pointer-events: auto; }
+.sheet { position: absolute; left: 0; right: 0; bottom: 0; max-height: 82%; overflow-y: auto; background: var(--surface); border-radius: 22px 22px 0 0; padding: 10px 14px 16px; transform: translateY(105%); transition: transform .25s; z-index: 6; }
+.open > .sheet { transform: none; }
+.sheet::before { content: ""; display: block; width: 38px; height: 4px; border-radius: 4px; background: var(--line); margin: 0 auto 10px; }
+.sheet h4 { font-size: 16px; margin-bottom: 8px; display: flex; justify-content: space-between; }
+.sheet .g { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; } .sheet .g .span { grid-column: 1 / -1; }
+.optrow { width: 100%; display: flex; justify-content: space-between; align-items: center; border: 0; background: transparent; padding: 11px 6px; border-radius: 10px; text-align: left; }
+.optrow.sel { color: var(--brand); font-weight: 700; }
+.verdict { margin-top: 30px; padding: 18px; border: 1px solid var(--line); background: var(--surface); border-radius: 14px; }
+.verdict h2 { font-size: 18px; margin-bottom: 8px; } .verdict ul { margin: 0; padding-left: 18px; } .verdict li { margin: 4px 0; }
+@media (max-width: 1000px) { .row { grid-template-columns: minmax(0, 1fr); justify-items: center; } }
+@media (prefers-reduced-motion: reduce) { .sheet, .scrim, .chev { transition: none; } }
+</style>
+
+<div class="wrap">
+  <header class="intro">
+    <h1>Vendor Enquiries on phones</h1>
+    <p>Better options for the status header and the filter panel. Tap everything: tiles filter, sheets slide up, tags clear. Sample data only.</p>
+  </header>
+  <section class="group"><h2>1. Header and status</h2>
+    <p>Today the Add enquiry button sits alone above the tiles, and the tiles are tall. The + in the tab bar already adds an enquiry, so the header button is a duplicate on phones.</p>
+    <div class="row" id="status"></div></section>
+  <section class="group"><h2>2. Filter panel</h2>
+    <p>Today twelve controls stack in a tall card before any result appears, and the Status dropdown repeats the tiles above it (the screenshot shows "Contacted" there while "All" is highlighted).</p>
+    <div class="row" id="filters"></div></section>
+  <aside class="verdict"><h2>Recommended combination</h2><ul>
+    <li><b>Status: A, compact tiles with color dots.</b> Same 3 by 2 grid you already have at about half the height, with a status color on each, and the duplicate Add button removed on phones.</li>
+    <li><b>Filters: A, a Filters button with a bottom sheet.</b> Search stays on top. Everything else moves into one sheet, and active filters show as removable tags so you can see and clear them without opening anything.</li>
+    <li>The Status dropdown leaves the filter panel on phones, because the tiles already do that job. Desktop keeps its current layout.</li></ul></aside>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+const P = { chev: 'm6 9 6 6 6-6', filt: 'M4 6h16M7 12h10M10 18h4', x: 'M6 6l12 12M18 6 6 18' };
+const ic = k => `<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${P[k]}"/></svg>`;
+const ST = [['', 'All', 7, 'var(--brand)'], ['new', 'New', 2, 'var(--c-new)'], ['contacted', 'Contacted', 2, 'var(--c-con)'], ['interested', 'Interested', 1, 'var(--c-int)'], ['not_interested', 'Not Interested', 1, 'var(--c-not)'], ['converted', 'Converted', 1, 'var(--c-cnv)']];
+const LIST = [['The Coffee Club', 'OZV-2026-00001 · Deira', 'interested'], ['Glow Studio', 'OZV-2026-00002 · Al Nahda', 'contacted'], ['IronWorks Gym', 'OZV-2026-00003 · JLT', 'new'], ['Zara Auto Care', 'OZV-2026-00004 · Mussafah', 'converted'], ['Vox Lanes', 'OZV-2026-00005 · Al Barsha', 'not_interested'], ['Bake & Co', 'OZV-2026-00006 · Marina', 'new'], ['Optic House', 'OZV-2026-00007 · Al Ain', 'contacted']];
+const stMeta = s => ST.find(x => x[0] === s) || ST[0];
+const cards = f => LIST.filter(x => !f || x[2] === f).map(x => `<div class="card"><div><b>${x[0]}</b><small>${x[1]}</small></div><span class="pill" style="color:${stMeta(x[2])[3]}">${stMeta(x[2])[1]}</span></div>`).join('');
+const tabbar = `<div class="tabbar"><span>Dashboard</span><span><b style="color:var(--brand)">Enquiries</b></span><span class="fab">+</span><span>Follow-ups</span><span>More</span></div>`;
+const phone = (inner, open) => `<div class="phone"><div class="screen ${open ? 'open' : ''}"><div class="statusbar"><span>9:41</span><span>●●● ▮</span></div><div class="topbar"><div class="logo">Oz</div><b>Vendor Enquiries</b></div>${inner}${tabbar}</div></div>`;
+const cap = (t, d, pick) => `<div class="cap"><b>${t}</b>${pick ? '<span class="pick">Recommended</span>' : ''}<small>${d}</small></div>`;
+const wrapO = o => `<div class="opt">${o[3]}${cap(o[0], o[1], o[2])}</div>`;
+const title = n => `<div class="ph1"><h3>Vendor Enquiries</h3><span>${n} results</span></div>`;
+
+/* ---------- 1. status ---------- */
+const S = { a: '', b: '', c: '', cOpen: false };
+function status() {
+  const tiles = (k) => `<div class="tiles" role="group" aria-label="Status">${ST.map(s => `<button class="tile" data-s="${k}:${s[0]}" aria-pressed="${S[k] === s[0]}"><span class="lbl"><i class="dot" style="background:${S[k] === s[0] ? 'currentColor' : s[3]}"></i>${s[1]}</span><b>${s[2]}</b></button>`).join('')}</div>`;
+  const A = phone(`<div class="body">${title(S.a ? LIST.filter(x => x[2] === S.a).length : 7)}${tiles('a')}${cards(S.a)}</div>`);
+  const tot = ST.slice(1).reduce((a, s) => a + s[2], 0);
+  const B = phone(`<div class="body">${title(S.b ? LIST.filter(x => x[2] === S.b).length : 7)}<div class="pipe"><div class="bar" aria-hidden="true">${ST.slice(1).map(s => `<i style="flex:${s[2]};background:${s[3]}"></i>`).join('')}</div><div class="legend">${ST.map(s => `<button class="lg" data-s="b:${s[0]}" aria-pressed="${S.b === s[0]}"><span><i class="dot" style="background:${s[3]}"></i>${s[1]}</span><b>${s[2]}</b></button>`).join('')}</div></div>${cards(S.b)}</div>`);
+  const cur = stMeta(S.c);
+  const C = phone(`<div class="body">${title(S.c ? LIST.filter(x => x[2] === S.c).length : 7)}<button class="sumcard" data-toggle="c" aria-expanded="${S.cOpen}"><span><span class="big">${cur[2]}</span>${cur[0] ? cur[1] : 'All enquiries'}</span><span class="chev">${ic('chev')}</span></button>${S.cOpen ? tiles('c') : ''}${cards(S.c)}</div>`);
+  $('#status').innerHTML = [
+    ['A. Compact tiles with status colors', 'Same 3 by 2 grid at half the height. Dot colors match the badges. Add button removed here; the + tab does it.', 1, A],
+    ['B. Pipeline bar with legend', 'Shows the shape of the pipeline at a glance, then the legend rows filter. Most visual, a bit taller.', 0, B],
+    ['C. Collapsible summary card', 'Collapsed by default: one line with the current filter and count. Most room for the list, but choices are hidden.', 0, C]
+  ].map(wrapO).join('');
+}
+
+/* ---------- 2. filters ---------- */
+const F = { cat: '', em: '', who: '', src: '', sort: 'Newest first', q: '' };
+const OPTS = { cat: ['Restaurants & Cafes', 'Beauty & Wellness', 'Fitness & Sports', 'Automotive'], em: ['Dubai', 'Abu Dhabi', 'Sharjah'], who: ['Aisha Khan', 'Omar Siddiqui', 'Layla Haddad'], src: ['Visit', 'Phone', 'WhatsApp', 'Referral'], sort: ['Newest first', 'Oldest first', 'Next follow-up', 'Business name'] };
+const LBL = { cat: 'Category', em: 'Emirate', who: 'Assigned to', src: 'Source', sort: 'Sort by' };
+const U = { sheetA: false, panelB: false, pick: '' };
+const count = () => ['cat', 'em', 'who', 'src'].filter(k => F[k]).length + (F.sort !== 'Newest first' ? 1 : 0);
+const sel = k => `<label for="s_${k}">${LBL[k]}</label><select class="sel" id="s_${k}" data-sel="${k}"><option value="">${k === 'sort' ? '' : 'Any'}</option>${OPTS[k].map(o => `<option ${F[k] === o ? 'selected' : ''}>${o}</option>`).join('')}</select>`;
+const tags = () => ['cat', 'em', 'who', 'src'].filter(k => F[k]).map(k => `<button class="tag" data-clear="${k}">${F[k]} <span>✕</span></button>`).join('') + (count() ? `<button class="clear" data-reset>Clear all</button>` : '');
+const dateRow = `<div><label for="d1">From</label><input class="sel" id="d1" type="date"></div><div><label for="d2">To</label><input class="sel" id="d2" type="date"></div>`;
+const tilesMini = `<div class="tiles">${ST.map((s, i) => `<div class="tile" aria-pressed="${i === 0}"><span class="lbl"><i class="dot" style="background:${i === 0 ? 'currentColor' : s[3]}"></i>${s[1]}</span><b>${s[2]}</b></div>`).join('')}</div>`;
+const searchRow = btn => `<div class="search"><input class="field" placeholder="Search name, phone, area, code" aria-label="Search" value="${F.q}">${btn}</div>`;
+function filters() {
+  const n = count();
+  const A = phone(`<div class="body">${title(7)}${tilesMini}${searchRow(`<button class="fbtn" data-open="sheetA">${ic('filt')} Filters ${n ? `<em>${n}</em>` : ''}</button>`)}<div class="tags">${tags()}</div>${cards('')}</div>
+    <div class="scrim" data-close></div><div class="sheet" role="dialog" aria-label="Filters"><h4>Filters <button class="clear" data-reset>Reset</button></h4>
+    <div class="g"><div class="span">${sel('cat')}</div><div>${sel('em')}</div><div>${sel('who')}</div><div>${sel('src')}</div><div>${sel('sort')}</div>${dateRow}</div>
+    <div class="apply"><button class="btn" data-close>Show 7 results</button></div></div>`, U.sheetA);
+  const B = phone(`<div class="body">${title(7)}${tilesMini}${searchRow(`<button class="fbtn" data-toggle="panelB" aria-expanded="${U.panelB}">${ic('filt')} ${n ? `<em>${n}</em>` : ''}<span class="chev" style="display:inline-block;transform:rotate(${U.panelB ? 180 : 0}deg)">${ic('chev')}</span></button>`)}
+    ${U.panelB ? `<div class="panel"><div class="span">${sel('cat')}</div><div>${sel('em')}</div><div>${sel('who')}</div><div>${sel('src')}</div><div>${sel('sort')}</div>${dateRow}<div class="span apply" style="margin:0"><button class="btn">Apply</button><button class="btn ghost" data-reset>Reset</button></div></div>` : `<div class="tags">${tags()}</div>`}${cards('')}</div>`);
+  const qb = k => `<button class="q ${F[k] ? 'on' : ''}" data-open="pick:${k}">${F[k] || LBL[k]} ${ic('chev')}</button>`;
+  const pk = U.pick;
+  const C = phone(`<div class="body">${title(7)}${tilesMini}${searchRow('')}<div class="qrow">${['cat', 'em', 'who', 'src', 'sort'].map(qb).join('')}</div>${cards('')}</div>
+    <div class="scrim" data-close></div><div class="sheet" role="dialog" aria-label="${pk ? LBL[pk] : ''}"><h4>${pk ? LBL[pk] : ''}</h4>${pk ? [''].concat(OPTS[pk]).map(o => `<button class="optrow ${F[pk] === o ? 'sel' : ''}" data-pickval="${o}">${o || (pk === 'sort' ? 'Newest first' : 'Any')}${F[pk] === o ? '✓' : ''}</button>`).join('') : ''}</div>`, !!pk);
+  $('#filters').innerHTML = [
+    ['A. Filters button with a bottom sheet', 'Search stays on top. Filters open as one sheet, active ones show as removable tags. Keeps the list visible.', 1, A],
+    ['B. Inline expandable panel', 'Taps open a compact two-column panel in place. No sheet, but it pushes the list down while open.', 0, B],
+    ['C. Quick-filter chips, one picker each', 'A swipeable row of Category, Emirate, Assigned, Source and Sort. Fastest for one filter, clumsy for combining several.', 0, C]
+  ].map(wrapO).join('');
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-s],[data-toggle],[data-open],[data-close],[data-clear],[data-reset],[data-pickval]');
+  if (!t) return;
+  if (t.dataset.s) { const [k, v] = t.dataset.s.split(':'); S[k] = v; status(); }
+  else if (t.dataset.toggle) { const k = t.dataset.toggle; if (k === 'c') S.cOpen = !S.cOpen; else U[k] = !U[k]; status(); filters(); }
+  else if (t.dataset.open) { const [k, v] = t.dataset.open.split(':'); if (k === 'pick') U.pick = v; else U[k] = true; filters(); }
+  else if (t.dataset.close !== undefined) { U.sheetA = false; U.pick = ''; filters(); }
+  else if (t.dataset.clear) { F[t.dataset.clear] = ''; filters(); }
+  else if (t.dataset.reset !== undefined) { Object.assign(F, { cat: '', em: '', who: '', src: '', sort: 'Newest first' }); filters(); }
+  else if (t.dataset.pickval !== undefined) { F[U.pick] = t.dataset.pickval || (U.pick === 'sort' ? 'Newest first' : ''); U.pick = ''; filters(); }
+});
+document.addEventListener('change', e => { const k = e.target.dataset.sel; if (k) { F[k] = e.target.value || (k === 'sort' ? 'Newest first' : ''); filters(); } });
+status(); filters();
+</script>
