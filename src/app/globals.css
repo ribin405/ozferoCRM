@@ -93,10 +93,15 @@
   h1 { font-size: 28px; font-weight: 700; }
   h1, h2, h3 { font-family: var(--font-display); letter-spacing: -0.01em; text-wrap: balance; }
   :focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+  @media (max-width: 767px) {
+    h1 { font-size: 24px; }
+    input, select, textarea { font-size: 16px; } /* stops iOS zooming into fields */
+  }
+  img { max-width: 100%; }
 }
 
 @layer components {
-  .input { @apply w-full min-w-0 rounded-[10px] border px-[11px] py-[9px] text-sm; background: var(--surface); border-color: var(--line); color: var(--fg); }
+  .input { @apply w-full min-w-0 rounded-[10px] border px-[11px] py-[9px] text-sm; background: var(--surface); border-color: color-mix(in srgb, var(--line), var(--fg) 22%); color: var(--fg); }
   .input:focus { border-color: var(--brand); outline: 2px solid var(--brand-soft); }
   .input:disabled { background: var(--bg-soft); }
   .label { @apply mb-1 block text-xs font-semibold; color: var(--muted); }
@@ -119,14 +124,14 @@
   .b-converted { background: var(--s-cnv-bg); color: var(--s-cnv-fg); }
 
   .page-head { @apply mb-5 flex flex-wrap items-end justify-between gap-3; }
-  .page-head h1 { @apply text-[28px] font-bold; }
+  .page-head h1 { @apply text-2xl font-bold md:text-[28px]; }
   .page-head p { @apply mt-0.5; color: var(--muted); }
 
   .stats { @apply mb-[18px] grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6; }
   .stat { @apply block rounded-[14px] border p-[14px] text-left; background: var(--surface); border-color: var(--line); }
   a.stat:hover { border-color: var(--brand); }
   .stat span { @apply text-xs; color: var(--muted); }
-  .stat b { @apply mt-1 block text-[30px] leading-[1.1] font-bold tabular-nums; font-family: var(--font-display); }
+  .stat b { @apply mt-1 block text-2xl md:text-[30px] leading-[1.1] font-bold tabular-nums; font-family: var(--font-display); }
   .stat.hero { border: 0; background: linear-gradient(150deg, #5fbd1f, #0d4a27); color: #fff; }
   .stat.hero span { color: #e3f8cf; }
   .stat.hero b { color: var(--lime); }
@@ -150,6 +155,7 @@
   .nav svg { @apply h-[18px] w-[18px] flex-none; }
   .nav .tag { @apply ml-auto rounded-full px-[7px] py-px text-[10px] font-bold; background: var(--lime); color: #0a3b26; }
   .nav .only-mobile { @apply md:hidden; }
+  .nav form.only-mobile { @apply flex; }
   .me { @apply mt-auto hidden items-center gap-2.5 rounded-xl p-2.5 md:flex; background: #00000026; }
   .avatar { @apply grid h-[34px] w-[34px] flex-none place-items-center rounded-full text-[13px] font-bold; background: var(--lime); color: #0a3b26; font-family: var(--font-display); }
   .me small { @apply block text-[11px]; color: #cfeab9; }

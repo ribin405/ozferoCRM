@@ -79,8 +79,8 @@ export default async function Enquiries({ searchParams }: { searchParams: Promis
         ))}
       </div>
 
-      <form className="card grid gap-3 md:grid-cols-4" action="/enquiries">
-        <input name="q" defaultValue={sp.q} placeholder="Search name, phone, contact, area, code…" className="input md:col-span-2" aria-label="Search" />
+      <form className="card grid grid-cols-2 gap-3 md:grid-cols-4" action="/enquiries">
+        <input name="q" defaultValue={sp.q} placeholder="Search name, phone, contact, area, code…" className="input col-span-2" aria-label="Search" />
         <select name="status" defaultValue={sp.status ?? ""} className="input" aria-label="Status">
           <option value="">All statuses</option>
           {STATUSES.map((s) => (
@@ -130,7 +130,7 @@ export default async function Enquiries({ searchParams }: { searchParams: Promis
           <option value="desc">Descending</option>
           <option value="asc">Ascending</option>
         </select>
-        <div className="flex gap-2">
+        <div className="col-span-2 flex gap-2 md:col-span-1">
           <button className="btn">Apply</button>
           <Link href="/enquiries" className="btn-secondary">Reset</Link>
         </div>
@@ -188,9 +188,9 @@ export default async function Enquiries({ searchParams }: { searchParams: Promis
         </table>
       </div>
 
-      <div className="flex items-center justify-between text-sm text-slate-600">
+      <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-slate-600">
         <span>{total} result{total === 1 ? "" : "s"}</span>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           {page > 1 && <Link href={link({ page: String(page - 1) })} className="btn-secondary">Previous</Link>}
           <span>Page {page} of {pages}</span>
           {page < pages && <Link href={link({ page: String(page + 1) })} className="btn-secondary">Next</Link>}

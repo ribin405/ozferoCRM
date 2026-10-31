@@ -33,3 +33,9 @@ versioned files in `supabase/migrations/`.
   (including a trigger preventing self-promotion), not just hidden in the UI.
 - The service-role key is used only in `createAdminClient()` after `requireAdmin()` passes.
 - `src/proxy.ts` is an optimistic redirect; each page re-verifies via `requireUser()`.
+
+
+
+git add .
+git commit -m "Your update message"
+git push

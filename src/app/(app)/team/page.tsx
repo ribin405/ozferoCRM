@@ -19,7 +19,7 @@ export default async function Team() {
               <div className="truncate font-medium">{m.full_name}</div>
               <div className="truncate text-xs text-slate-500">{m.email}</div>
             </div>
-            <select name="role" defaultValue={m.role} className="input w-40" disabled={m.id === profile.id} aria-label="Role">
+            <select name="role" defaultValue={m.role} className="input w-full sm:w-40" disabled={m.id === profile.id} aria-label="Role">
               <option value="team_member">Team member</option>
               <option value="admin">Administrator</option>
             </select>

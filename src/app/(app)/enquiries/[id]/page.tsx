@@ -66,9 +66,9 @@ export default async function EnquiryDetail({ params }: { params: Promise<{ id: 
           <h2 className="mb-3 font-semibold">Details</h2>
           <dl className="space-y-2 text-sm">
             {rows.map(([k, v]) => (
-              <div key={k} className="grid grid-cols-3 gap-2">
+              <div key={k} className="grid grid-cols-[110px_minmax(0,1fr)] gap-2">
                 <dt className="text-slate-500">{k}</dt>
-                <dd className="col-span-2 break-words">{v}</dd>
+                <dd className="break-words">{v}</dd>
               </div>
             ))}
           </dl>

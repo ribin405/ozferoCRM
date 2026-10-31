@@ -56,6 +56,9 @@ export default function Sidebar({ name, isAdmin }: { name: string; isAdmin: bool
             {n.admin && <span className="tag">Admin</span>}
           </Link>
         ))}
+        <button type="button" onClick={toggleTheme} className="only-mobile" aria-label="Toggle light or dark theme">
+          Theme
+        </button>
         <form action={signOut} className="only-mobile">
           <button type="submit">Sign out</button>
         </form>
