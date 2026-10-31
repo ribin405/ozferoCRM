@@ -23,7 +23,7 @@ export const NAV = [
 
 export function toggleTheme() {
   const r = document.documentElement;
-  const dark = r.dataset.theme ? r.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  const dark = r.dataset.theme === "dark";
   const next = dark ? "light" : "dark";
   r.dataset.theme = next;
   try {

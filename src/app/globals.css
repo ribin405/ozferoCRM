@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Ozfero theme tokens. Light by default; dark follows the OS unless data-theme says otherwise. */
+/* Ozfero theme tokens. Light is the default; dark applies only when the user picks it (data-theme="dark"). */
 :root {
   --bg: #f3f7ef;
   --bg-soft: #eaf2e4;
@@ -28,22 +28,6 @@
   --btn-b: #2a7d12;
   --btn-fg: #ffffff;
   --c-new: #6b7d70; --c-con: #2f78d0; --c-int: #d99a00; --c-not: #d04a4a; --c-cnv: #2f8f0f;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #07140d; --bg-soft: #0b1b11; --surface: #0e2217; --fg: #e8f5e0; --muted: #96ad9b; --line: #1d3a28;
-    --brand: #8bd82a; --brand-deep: #8bd82a; --brand-ink: #07140d; --brand-soft: #16331f;
-    --warn-bg: #3a3012; --warn-line: #6e5a1c; --warn-fg: #f2dc8a;
-    --s-new-bg: #1d3426; --s-new-fg: #b6c9bb;
-    --s-con-bg: #162f4d; --s-con-fg: #9cc7f5;
-    --s-int-bg: #45360d; --s-int-fg: #f2d37a;
-    --s-not-bg: #4a1d1d; --s-not-fg: #f3a3a3;
-    --s-cnv-bg: #1d4a14; --s-cnv-fg: #a9ec8c;
-    --danger: #ff8f86;
-    --btn-a: #b8f04a; --btn-b: #6fc21f; --btn-fg: #07140d;
-    --c-new: #9bb0a0; --c-con: #7db4f2; --c-int: #f2c24d; --c-not: #f08a8a; --c-cnv: #8bd82a;
-    color-scheme: dark;
-  }
 }
 :root[data-theme="dark"] {
   --bg: #07140d; --bg-soft: #0b1b11; --surface: #0e2217; --fg: #e8f5e0; --muted: #96ad9b; --line: #1d3a28;
