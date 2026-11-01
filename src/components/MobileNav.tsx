@@ -34,7 +34,7 @@ export default function MobileNav({ isAdmin }: { isAdmin: boolean }) {
     <>
       <header className="mtop">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/ozfero-icon.png" alt="Ozfero" className="h-9 w-9 rounded-[10px]" />
+        <img src="/logo.png" alt="Ozfero" className="h-10 w-10 drop-shadow-[0_2px_6px_rgba(0,0,0,0.3)]" />
         <b>{title}</b>
       </header>
 

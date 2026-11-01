@@ -7,6 +7,7 @@ export const ICON: Record<string, string> = {
   settings: "M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2",
   more: "M5 12h.01M12 12h.01M19 12h.01",
   filter: "M4 6h16M7 12h10M10 18h4",
+  download: "M12 4v11M7 11l5 5 5-5M5 20h14",
   plus: "M12 5v14M5 12h14",
   moon: "M21 13a8 8 0 1 1-10-10 6.5 6.5 0 0 0 10 10z",
   out: "M10 4H5v16h5M15 8l4 4-4 4M19 12H9",
@@ -23,7 +24,7 @@ export const NAV = [
 
 export function toggleTheme() {
   const r = document.documentElement;
-  const dark = r.dataset.theme === "dark";
+  const dark = r.dataset.theme !== "light";
   const next = dark ? "light" : "dark";
   r.dataset.theme = next;
   try {

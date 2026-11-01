@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Ozfero theme tokens. Light is the default; dark applies only when the user picks it (data-theme="dark"). */
+/* Ozfero theme tokens. Dark is the default; light applies when the user picks it (data-theme="light"). */
 :root {
   --bg: #f3f7ef;
   --bg-soft: #eaf2e4;
@@ -28,8 +28,8 @@
   --btn-b: #2a7d12;
   --btn-fg: #ffffff;
   --c-new: #6b7d70; --c-con: #2f78d0; --c-int: #d99a00; --c-not: #d04a4a; --c-cnv: #2f8f0f;
-}
-:root[data-theme="dark"] {
+
+  /* dark overrides */
   --bg: #07140d; --bg-soft: #0b1b11; --surface: #0e2217; --fg: #e8f5e0; --muted: #96ad9b; --line: #1d3a28;
   --brand: #8bd82a; --brand-deep: #8bd82a; --brand-ink: #07140d; --brand-soft: #16331f;
   --warn-bg: #3a3012; --warn-line: #6e5a1c; --warn-fg: #f2dc8a;
@@ -42,6 +42,34 @@
   --btn-a: #b8f04a; --btn-b: #6fc21f; --btn-fg: #07140d;
   --c-new: #9bb0a0; --c-con: #7db4f2; --c-int: #f2c24d; --c-not: #f08a8a; --c-cnv: #8bd82a;
   color-scheme: dark;
+}
+:root[data-theme="light"] {
+  --bg: #f3f7ef;
+  --bg-soft: #eaf2e4;
+  --surface: #ffffff;
+  --fg: #12261a;
+  --muted: #5b6e60;
+  --line: #dde7d8;
+  --brand: #2f8f0f;
+  --brand-deep: #1d6b0c;
+  --brand-ink: #ffffff;
+  --brand-soft: #e6f4dc;
+  --lime: #c6ff00;
+  --rail-a: #3f8f12;
+  --rail-b: #0a3b26;
+  --warn-bg: #fff6d6;
+  --warn-line: #ecd27a;
+  --warn-fg: #6b5200;
+  --s-new-bg: #e9eee6; --s-new-fg: #44564a;
+  --s-con-bg: #dcecff; --s-con-fg: #1d5aa6;
+  --s-int-bg: #fff0c2; --s-int-fg: #7a5600;
+  --s-not-bg: #fde0e0; --s-not-fg: #a12b2b;
+  --s-cnv-bg: #d4f3c4; --s-cnv-fg: #1d6b0c;
+  --danger: #b3261e;
+  --btn-a: #52b51c;
+  --btn-b: #2a7d12;
+  --btn-fg: #ffffff;
+  --c-new: #6b7d70; --c-con: #2f78d0; --c-int: #d99a00; --c-not: #d04a4a; --c-cnv: #2f8f0f;
 }
 
 /* Remap the Tailwind palette names used in components onto the theme tokens. */
@@ -74,8 +102,8 @@
 
 @layer base {
   *, ::after, ::before { border-color: var(--line); }
-  html { color-scheme: light; }
-  :root[data-theme="dark"] { color-scheme: dark; }
+  html { color-scheme: dark; }
+  :root[data-theme="light"] { color-scheme: light; }
   body { background: var(--bg); color: var(--fg); font-family: var(--font-sans); font-size: 14px; line-height: 1.5; }
   h1 { font-size: 28px; font-weight: 700; }
   h1, h2, h3 { font-family: var(--font-display); letter-spacing: -0.01em; text-wrap: balance; }
@@ -136,7 +164,7 @@
   .rail { @apply hidden flex-col gap-[22px] px-[14px] py-5 text-[#f1fbe9] lg:sticky lg:top-0 lg:flex lg:h-screen;
     background: linear-gradient(160deg, var(--rail-a) 0%, #1f6a14 38%, var(--rail-b) 100%); }
   .brand { @apply flex items-center gap-3 px-1.5; }
-  .brand img { @apply h-[46px] w-[46px] rounded-xl; }
+  .brand img { @apply h-[46px] w-[46px] drop-shadow-[0_4px_10px_rgba(0,0,0,0.3)]; }
   .brand .word { @apply text-[17px] leading-none font-extrabold text-white; font-family: var(--font-display); }
   .brand .sub { @apply mt-1 text-[11px] uppercase tracking-[0.12em]; color: #d4f5b4; }
   .nav { @apply flex flex-col gap-[3px]; }
@@ -209,4 +237,26 @@
   .ecard:hover { border-color: var(--brand); }
   .ecard b { @apply block text-[15px] leading-snug; font-family: var(--font-display); }
   .ecard small { @apply block text-xs; color: var(--muted); }
+
+  /* Sign-in: dark glass card on a deep green stage (same in light and dark themes). */
+  .auth-stage { @apply relative flex min-h-screen flex-col items-center justify-center gap-6 overflow-hidden px-4 py-10; color: #eaf7e0;
+    background:
+      radial-gradient(60% 50% at 18% 12%, #3f8f1299 0%, transparent 70%),
+      radial-gradient(50% 45% at 85% 90%, #c6ff0018 0%, transparent 70%),
+      linear-gradient(160deg, #0f4a22 0%, #0a3b26 45%, #05241a 100%); }
+  .auth-card { @apply w-full max-w-sm rounded-[28px] border px-7 pt-9 pb-8 text-center backdrop-blur-xl;
+    background: linear-gradient(180deg, #ffffff17, #ffffff0a); border-color: #ffffff26;
+    box-shadow: 0 30px 80px -20px #000000a6, inset 0 1px 0 #ffffff2e; }
+  .auth-logo { @apply mx-auto mb-5 h-[84px] w-[84px]; filter: drop-shadow(0 10px 24px #00000080) drop-shadow(0 0 28px #8bd82a40); }
+  .auth-card h1 { @apply text-[26px] font-bold text-white; }
+  .auth-sub { @apply mt-1 mb-7 text-sm; color: #b5d3a6; }
+  .auth-card form { @apply text-left; }
+  .auth-card .label { @apply mb-1.5 text-[12px] tracking-wide; color: #b5d3a6; }
+  .auth-card .input { @apply h-12 rounded-xl text-base; background: #ffffff12; border-color: #ffffff2e; color: #fff; }
+  .auth-card .input:focus { border-color: #b8f04a; outline: 3px solid #b8f04a33; background: #ffffff1a; }
+  .auth-card .input:-webkit-autofill { -webkit-text-fill-color: #fff; box-shadow: 0 0 0 100px #14452c inset; }
+  .auth-card .btn { @apply h-12 rounded-xl text-[15px] font-bold; background: linear-gradient(135deg, #c6ff00, #6fc21f); color: #06280f;
+    box-shadow: 0 10px 24px -8px #8bd82a88; }
+  .auth-card [role="alert"] { @apply rounded-lg px-3 py-2 text-[13px]; background: #ff6b6b22; color: #ffb4ad; }
+  .auth-foot { @apply text-xs tracking-wide; color: #8fb480; }
 }

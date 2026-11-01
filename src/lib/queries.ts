@@ -29,3 +29,34 @@ export const fmtDateTime = (d: string) =>
   new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Dubai", dateStyle: "medium", timeStyle: "short" }).format(
     new Date(d),
   );
+
+export type EnquirySP = Record<string, string | undefined>;
+
+const ENQUIRY_SORTS = new Set(["created_at", "updated_at", "next_follow_up_at", "business_name"]);
+
+export function enquirySort(sp: EnquirySP) {
+  return { sort: ENQUIRY_SORTS.has(sp.sort ?? "") ? (sp.sort as string) : "created_at", asc: sp.dir === "asc" };
+}
+
+/** Applies the Vendor Enquiries list filters to a PostgREST query. Shared by the list page and the Excel export. */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function applyEnquiryFilters<T>(query: T, sp: EnquirySP): T {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let q: any = query;
+  if (sp.q?.trim()) {
+    // Strip characters with meaning in PostgREST filter syntax.
+    const t = sp.q.trim().replace(/[,()%*\\]/g, " ");
+    q = q.or(
+      `business_name.ilike.%${t}%,primary_phone.ilike.%${t}%,contact_person.ilike.%${t}%,area.ilike.%${t}%,enquiry_code.ilike.%${t}%`,
+    );
+  }
+  if (sp.status) q = q.eq("status", sp.status);
+  if (sp.category) q = q.eq("category_id", sp.category);
+  if (sp.subcategory) q = q.eq("subcategory_id", sp.subcategory);
+  if (sp.emirate) q = q.eq("emirate", sp.emirate);
+  if (sp.assigned) q = sp.assigned === "none" ? q.is("assigned_to", null) : q.eq("assigned_to", sp.assigned);
+  if (sp.source) q = q.eq("source", sp.source);
+  if (sp.from) q = q.gte("created_at", `${sp.from}T00:00:00+04:00`);
+  if (sp.to) q = q.lte("created_at", `${sp.to}T23:59:59+04:00`);
+  return q as T;
+}

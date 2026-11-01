@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: "Ozfero Vendor Desk",
   description: "Internal vendor enquiry management for the Ozfero Offers team.",
   robots: { index: false, follow: false },
-  icons: { icon: "/ozfero-icon.png" },
+  icons: { icon: "/logo.png" },
 };
 
 export const viewport: Viewport = { viewportFit: "cover" };

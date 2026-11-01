@@ -1,24 +1,20 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/auth";
-import { fmtDate, loadFormOptions } from "@/lib/queries";
+import { applyEnquiryFilters, enquirySort, fmtDate, loadFormOptions } from "@/lib/queries";
 import { EMIRATES, SOURCES, STATUSES, STATUS_LABEL, label, type Status } from "@/lib/constants";
 import StatusBadge from "@/components/StatusBadge";
 import MobileFilters from "@/components/MobileFilters";
+import Icon from "@/components/Icon";
 
 const PAGE_SIZE = 20;
-const SORTS: Record<string, string> = {
-  created_at: "created_at",
-  updated_at: "updated_at",
-  next_follow_up_at: "next_follow_up_at",
-  business_name: "business_name",
-};
 
 type SP = Record<string, string | undefined>;
 const DOT = { new: "new", contacted: "con", interested: "int", not_interested: "not", converted: "cnv" } as const;
 
 export default async function Enquiries({ searchParams }: { searchParams: Promise<SP> }) {
   const sp = await searchParams;
-  const { supabase } = await requireUser();
+  const { supabase, profile } = await requireUser();
+  const isAdmin = profile.role === "admin";
   const [{ categories, members }, { data: countRows }] = await Promise.all([
     loadFormOptions(supabase),
     supabase.rpc("dashboard_counts"),
@@ -27,8 +23,7 @@ export default async function Enquiries({ searchParams }: { searchParams: Promis
   const allCount = Object.values(counts).reduce((a: number, b) => a + (b as number), 0);
 
   const page = Math.max(1, Number(sp.page) || 1);
-  const sort = SORTS[sp.sort ?? ""] ?? "created_at";
-  const asc = sp.dir === "asc";
+  const { sort, asc } = enquirySort(sp);
 
   let q = supabase
     .from("vendor_enquiries")
@@ -37,21 +32,7 @@ export default async function Enquiries({ searchParams }: { searchParams: Promis
       { count: "exact" },
     );
 
-  if (sp.q?.trim()) {
-    // Strip characters with meaning in PostgREST filter syntax.
-    const t = sp.q.trim().replace(/[,()%*\\]/g, " ");
-    q = q.or(
-      `business_name.ilike.%${t}%,primary_phone.ilike.%${t}%,contact_person.ilike.%${t}%,area.ilike.%${t}%,enquiry_code.ilike.%${t}%`,
-    );
-  }
-  if (sp.status) q = q.eq("status", sp.status);
-  if (sp.category) q = q.eq("category_id", sp.category);
-  if (sp.subcategory) q = q.eq("subcategory_id", sp.subcategory);
-  if (sp.emirate) q = q.eq("emirate", sp.emirate);
-  if (sp.assigned) q = sp.assigned === "none" ? q.is("assigned_to", null) : q.eq("assigned_to", sp.assigned);
-  if (sp.source) q = q.eq("source", sp.source);
-  if (sp.from) q = q.gte("created_at", `${sp.from}T00:00:00+04:00`);
-  if (sp.to) q = q.lte("created_at", `${sp.to}T23:59:59+04:00`);
+  q = applyEnquiryFilters(q, sp);
 
   const { data, count, error } = await q
     .order(sort, { ascending: asc, nullsFirst: false })
@@ -66,6 +47,7 @@ export default async function Enquiries({ searchParams }: { searchParams: Promis
     return `/enquiries?${p}`;
   };
 
+  const exportHref = `/enquiries/export?${new URLSearchParams(Object.entries(sp).filter(([k, v]) => v && k !== "page") as [string, string][])}`;
   const tags: { label: string; href: string }[] = [];
   const addTag = (lbl: string | undefined, keys: string[]) => {
     if (lbl) tags.push({ label: lbl, href: link(Object.fromEntries([...keys, "page"].map((k) => [k, undefined]))) });
@@ -84,9 +66,17 @@ export default async function Enquiries({ searchParams }: { searchParams: Promis
           <h1>Vendor Enquiries</h1>
           <p className="hidden lg:block">Search, filter and open any business to see its history.</p>
         </div>
-        <Link href="/enquiries/new" className="btn hidden lg:inline-flex">
-          + Add enquiry
-        </Link>
+        <div className="hidden gap-2 lg:flex">
+          {isAdmin && (
+            <a href={exportHref} className="btn-secondary">
+              <Icon name="download" className="h-[18px] w-[18px]" />
+              Export to Excel
+            </a>
+          )}
+          <Link href="/enquiries/new" className="btn">
+            + Add enquiry
+          </Link>
+        </div>
       </div>
 
       <section className="pipe" aria-label="Status pipeline">
@@ -120,7 +110,7 @@ export default async function Enquiries({ searchParams }: { searchParams: Promis
       </section>
 
       <MobileFilters
-        values={{ ...(sp as Record<string, string>), sort: SORTS[sp.sort ?? ""] ?? "created_at" }}
+        values={{ ...(sp as Record<string, string>), sort }}
         categories={categories.map((c) => ({ id: c.id, name: c.name, subcategories: c.subcategories.map((s) => ({ id: s.id, name: s.name })) }))}
         members={members.map((m) => ({ value: m.id, label: m.full_name }))}
         emirates={[...EMIRATES]}
@@ -129,6 +119,13 @@ export default async function Enquiries({ searchParams }: { searchParams: Promis
         resetHref={sp.status ? `/enquiries?status=${sp.status}` : "/enquiries"}
         total={total}
       />
+
+      {isAdmin && (
+        <a href={exportHref} className="btn-secondary fbig w-full lg:hidden">
+          <Icon name="download" className="h-[18px] w-[18px]" />
+          Export to Excel
+        </a>
+      )}
 
       <div className="hidden flex-wrap gap-1.5 lg:flex">
         {[["", "All"], ...STATUSES.map((s) => [s, STATUS_LABEL[s]])].map(([v, l]) => (

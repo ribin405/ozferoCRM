@@ -17,7 +17,7 @@ export default function Sidebar({ name, isAdmin }: { name: string; isAdmin: bool
       <aside className="rail">
         <div className="brand">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/ozfero-icon.png" alt="Ozfero" />
+          <img src="/logo.png" alt="Ozfero" />
           <div>
             <div className="word">Vendor Desk</div>
             <div className="sub">Offers team</div>
