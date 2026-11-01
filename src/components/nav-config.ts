@@ -22,12 +22,14 @@ export const NAV = [
   { href: "/settings", key: "settings", label: "Settings" },
 ];
 
+/** Dark is the default. Light is applied only when the user presses the toggle, then remembered on that browser. */
 export function toggleTheme() {
   const r = document.documentElement;
-  const dark = r.dataset.theme !== "light";
-  const next = dark ? "light" : "dark";
-  r.dataset.theme = next;
+  const toLight = r.dataset.theme !== "light";
+  if (toLight) r.dataset.theme = "light";
+  else delete r.dataset.theme;
   try {
-    localStorage.setItem("ozf-theme", next);
+    if (toLight) localStorage.setItem("ozf-theme-v2", "light");
+    else localStorage.removeItem("ozf-theme-v2");
   } catch {}
 }

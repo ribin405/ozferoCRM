@@ -20,7 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{var t=localStorage.getItem("ozf-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}`,
+            __html: `try{if(localStorage.getItem("ozf-theme-v2")==="light")document.documentElement.dataset.theme="light"}catch(e){}`,
           }}
         />
       </head>
