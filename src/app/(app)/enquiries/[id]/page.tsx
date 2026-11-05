@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { requireUser } from "@/lib/auth";
-import { fmtDate, fmtDateTime } from "@/lib/queries";
+import { fmtDate, fmtDateTime, type FollowUpRow } from "@/lib/queries";
 import { label, type Status } from "@/lib/constants";
 import StatusBadge from "@/components/StatusBadge";
 import FollowUpForm from "@/components/FollowUpForm";
@@ -97,7 +97,7 @@ export default async function EnquiryDetail({ params }: { params: Promise<{ id: 
             <h2 className="mb-3 font-semibold">Activity timeline</h2>
             {fus?.length ? (
               <ol className="space-y-4 border-l pl-4">
-                {fus.map((f: any) => (
+                {(fus as unknown as FollowUpRow[]).map((f) => (
                   <li key={f.id} className="text-sm">
                     <div className="font-medium">
                       {label(f.activity_type)} · {fmtDateTime(f.activity_at)}

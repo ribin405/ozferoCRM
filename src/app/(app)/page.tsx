@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/auth";
-import { fmtDate, todayUAE } from "@/lib/queries";
+import { fmtDate, todayUAE, type EnquiryListRow } from "@/lib/queries";
 import { STATUSES, STATUS_LABEL, type Status } from "@/lib/constants";
 import StatusBadge from "@/components/StatusBadge";
 
@@ -76,7 +76,7 @@ export default async function Dashboard() {
                   </tr>
                 </thead>
                 <tbody className="divide-y">
-                  {recent.map((r: any) => (
+                  {(recent as unknown as EnquiryListRow[]).map((r) => (
                     <tr key={r.id}>
                       <td className="td">
                         <Link href={`/enquiries/${r.id}`} className="font-medium text-violet-700 hover:underline">

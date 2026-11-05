@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/auth";
-import { applyEnquiryFilters, enquirySort, fmtDate, loadFormOptions } from "@/lib/queries";
+import { applyEnquiryFilters, enquirySort, fmtDate, loadFormOptions, type EnquiryListRow } from "@/lib/queries";
 import { EMIRATES, SOURCES, STATUSES, STATUS_LABEL, label, type Status } from "@/lib/constants";
 import StatusBadge from "@/components/StatusBadge";
 import MobileFilters from "@/components/MobileFilters";
@@ -39,6 +39,7 @@ export default async function Enquiries({ searchParams }: { searchParams: Promis
     .order(sort, { ascending: asc, nullsFirst: false })
     .range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1);
 
+  const rows = (data ?? []) as unknown as EnquiryListRow[];
   const total = count ?? 0;
   const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
   const subs = categories.find((c) => c.id === sp.category)?.subcategories ?? [];
@@ -196,7 +197,7 @@ export default async function Enquiries({ searchParams }: { searchParams: Promis
       {error && <p role="alert" className="text-sm text-rose-600">Could not load enquiries: {error.message}</p>}
 
       <div className="space-y-2.5 lg:hidden">
-        {(data ?? []).map((r: any) => (
+        {rows.map((r) => (
           <div key={r.id} className="ecard !block">
           <Link href={`/enquiries/${r.id}`} className="flex items-start justify-between gap-3">
             <div className="min-w-0">
@@ -245,7 +246,7 @@ export default async function Enquiries({ searchParams }: { searchParams: Promis
             </tr>
           </thead>
           <tbody className="divide-y">
-            {(data ?? []).map((r: any) => (
+            {rows.map((r) => (
               <tr key={r.id} className="hover:bg-slate-50">
                 <td className="td">
                   <Link href={`/enquiries/${r.id}`} className="font-medium text-violet-700 hover:underline">

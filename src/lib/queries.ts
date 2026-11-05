@@ -39,7 +39,6 @@ export function enquirySort(sp: EnquirySP) {
 }
 
 /** Applies the Vendor Enquiries list filters to a PostgREST query. Shared by the list page and the Excel export. */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function applyEnquiryFilters<T>(query: T, sp: EnquirySP): T {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let q: any = query;
@@ -60,3 +59,30 @@ export function applyEnquiryFilters<T>(query: T, sp: EnquirySP): T {
   if (sp.to) q = q.lte("created_at", `${sp.to}T23:59:59+04:00`);
   return q as T;
 }
+
+export type EnquiryListRow = {
+  id: string;
+  enquiry_code: string;
+  business_name: string;
+  branch_name: string | null;
+  primary_phone: string;
+  contact_person: string | null;
+  area: string | null;
+  emirate: string | null;
+  status: "new" | "contacted" | "interested" | "not_interested" | "converted";
+  next_follow_up_at: string | null;
+  created_at: string;
+  categories: { name: string } | null;
+  subcategories: { name: string } | null;
+  assigned: { full_name: string } | null;
+};
+
+export type FollowUpRow = {
+  id: string;
+  activity_type: string;
+  activity_at: string;
+  outcome: string | null;
+  notes: string | null;
+  next_follow_up_at: string | null;
+  author: { full_name: string } | null;
+};

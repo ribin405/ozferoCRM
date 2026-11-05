@@ -4,16 +4,29 @@ import { useActionState, useEffect, useRef } from "react";
 import { addFollowUp, type FormState } from "@/app/(app)/enquiries/actions";
 import { ACTIVITY_TYPES, STATUSES, STATUS_LABEL, label } from "@/lib/constants";
 
+const uaeNow = () =>
+  new Intl.DateTimeFormat("sv-SE", {
+    timeZone: "Asia/Dubai", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+  })
+    .format(new Date())
+    .replace(" ", "T");
+
 export default function FollowUpForm({ enquiryId, currentStatus }: { enquiryId: string; currentStatus: string }) {
   const [state, action, pending] = useActionState(addFollowUp, undefined as FormState);
   const ref = useRef<HTMLFormElement>(null);
   const err = state?.errors ?? {};
+  // Default the contact time to "now" in UAE time (the team's time zone), e.g. 2026-10-30T14:05.
+  const setNow = () => {
+    const field = ref.current?.elements.namedItem("activity_at");
+    if (field instanceof HTMLInputElement) field.value = uaeNow();
+  };
+  useEffect(setNow, []);
   useEffect(() => {
-    if (state?.message === "Follow-up saved.") ref.current?.reset();
+    if (state?.message === "Follow-up saved.") {
+      ref.current?.reset();
+      setNow();
+    }
   }, [state]);
-
-  // Local-time value for datetime-local, e.g. 2026-10-30T14:05
-  const now = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16);
 
   return (
     <form ref={ref} action={action} className="grid gap-3 md:grid-cols-2">
@@ -28,7 +41,7 @@ export default function FollowUpForm({ enquiryId, currentStatus }: { enquiryId: 
       </div>
       <div>
         <label className="label" htmlFor="activity_at">Contact date & time</label>
-        <input id="activity_at" name="activity_at" type="datetime-local" defaultValue={now} className="input" required />
+        <input id="activity_at" name="activity_at" type="datetime-local" className="input" required />
         {err.activity_at && <p className="mt-1 text-xs text-rose-600">{err.activity_at}</p>}
       </div>
       <div className="md:col-span-2">

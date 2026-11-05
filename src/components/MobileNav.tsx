@@ -22,7 +22,11 @@ export default function MobileNav({ isAdmin }: { isAdmin: boolean }) {
   const title = NAV.find((n) => active(n.href))?.label ?? (path.startsWith("/enquiries/new") ? "Add enquiry" : "Vendor Desk");
   const moreActive = ["/categories", "/team", "/settings"].some(active);
 
-  useEffect(() => setOpen(false), [path]);
+  const [lastPath, setLastPath] = useState(path);
+  if (path !== lastPath) {
+    setLastPath(path);
+    setOpen(false);
+  }
   useEffect(() => {
     if (!open) return;
     const h = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);

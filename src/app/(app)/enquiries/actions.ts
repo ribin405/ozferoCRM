@@ -57,7 +57,7 @@ export async function addFollowUp(_prev: FormState, fd: FormData): Promise<FormS
 
   const { error } = await supabase
     .from("follow_ups")
-    .insert({ ...fu, activity_at: new Date(fu.activity_at).toISOString(), created_by: profile.id });
+    .insert({ ...fu, activity_at: new Date(/[zZ]|[+-]\d{2}:?\d{2}$/.test(fu.activity_at) ? fu.activity_at : `${fu.activity_at}:00+04:00`).toISOString(), created_by: profile.id });
   if (error) return { message: error.message };
 
   // Keep the enquiry in sync: status and next follow-up date reflect the latest activity.
