@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { requireUser } from "@/lib/auth";
+import { requireAdmin, requireUser } from "@/lib/auth";
 import { enquirySchema, fieldErrors, followUpSchema, formToObject } from "@/lib/schemas";
 
 export type FormState = { errors?: Record<string, string>; message?: string } | undefined;
@@ -68,4 +68,16 @@ export async function addFollowUp(_prev: FormState, fd: FormData): Promise<FormS
 
   revalidatePath("/", "layout");
   return { message: "Follow-up saved." };
+}
+
+/** Admin-only. Follow-ups are removed with the enquiry (ON DELETE CASCADE). */
+export async function deleteEnquiry(id: string, redirectTo?: string): Promise<{ error?: string }> {
+  const { supabase } = await requireAdmin();
+  // select() so a delete blocked by row-level security is reported instead of looking like success.
+  const { data, error } = await supabase.from("vendor_enquiries").delete().eq("id", id).select("id");
+  if (error) return { error: error.message };
+  if (!data?.length) return { error: "Nothing was deleted. The enquiry may already be gone, or the database refused the request." };
+  revalidatePath("/", "layout");
+  if (redirectTo) redirect(redirectTo);
+  return {};
 }

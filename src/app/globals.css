@@ -259,4 +259,20 @@
     box-shadow: 0 10px 24px -8px #8bd82a88; }
   .auth-card [role="alert"] { @apply rounded-lg px-3 py-2 text-[13px]; background: #ff6b6b22; color: #ffb4ad; }
   .auth-foot { @apply text-xs tracking-wide; color: #8fb480; }
+
+  /* Row actions and the delete confirmation. */
+  .act { @apply inline-flex min-h-11 cursor-pointer items-center justify-center gap-1.5 rounded-xl border px-3.5 text-[13.5px] font-semibold active:scale-[0.97] lg:min-h-9 lg:rounded-lg lg:px-2.5 lg:text-[13px];
+    background: var(--surface); border-color: color-mix(in srgb, var(--line), var(--fg) 22%); color: var(--fg); }
+  .act:hover { border-color: var(--brand); }
+  .act.danger { color: var(--danger); }
+  .act.danger:hover { border-color: var(--danger); background: color-mix(in srgb, var(--danger), transparent 90%); }
+  .dlg { @apply m-auto w-[min(92vw,26rem)] rounded-[22px] border p-6; background: var(--surface); color: var(--fg); border-color: var(--line); box-shadow: 0 30px 80px -20px #000000b3; }
+  .dlg::backdrop { background: #02100a99; backdrop-filter: blur(3px); }
+  .dlg h2 { @apply mb-2 text-lg font-bold; }
+  .dlg p { @apply text-sm; color: var(--muted); }
+  .dlg p b { color: var(--fg); }
+  .dlg-error { @apply mt-3 rounded-lg px-3 py-2 text-[13px]; background: color-mix(in srgb, var(--danger), transparent 85%); color: var(--danger) !important; }
+  .dlg-actions { @apply mt-5 flex gap-2.5; }
+  .dlg-actions > * { @apply flex-1; }
+  .dlg-delete { @apply inline-flex cursor-pointer items-center justify-center rounded-xl border-0 px-4 font-bold text-white disabled:opacity-60; background: linear-gradient(135deg, #e5484d, #b3261e); }
 }

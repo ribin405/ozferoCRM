@@ -5,10 +5,12 @@ import { fmtDate, fmtDateTime } from "@/lib/queries";
 import { label, type Status } from "@/lib/constants";
 import StatusBadge from "@/components/StatusBadge";
 import FollowUpForm from "@/components/FollowUpForm";
+import DeleteEnquiryButton from "@/components/DeleteEnquiryButton";
+import Icon from "@/components/Icon";
 
 export default async function EnquiryDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const { supabase } = await requireUser();
+  const { supabase, profile } = await requireUser();
   const [{ data: e }, { data: fus }] = await Promise.all([
     supabase
       .from("vendor_enquiries")
@@ -58,7 +60,13 @@ export default async function EnquiryDetail({ params }: { params: Promise<{ id: 
             {e.enquiry_code} <StatusBadge status={e.status as Status} />
           </div>
         </div>
-        <Link href={`/enquiries/${id}/edit`} className="btn-secondary">Edit</Link>
+        <div className="flex gap-2">
+          <Link href={`/enquiries/${id}/edit`} className="act">
+            <Icon name="edit" className="h-[18px] w-[18px]" />
+            Edit
+          </Link>
+          {profile.role === "admin" && <DeleteEnquiryButton id={id} name={e.business_name} redirectTo="/enquiries" />}
+        </div>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">

@@ -4,6 +4,7 @@ import { applyEnquiryFilters, enquirySort, fmtDate, loadFormOptions } from "@/li
 import { EMIRATES, SOURCES, STATUSES, STATUS_LABEL, label, type Status } from "@/lib/constants";
 import StatusBadge from "@/components/StatusBadge";
 import MobileFilters from "@/components/MobileFilters";
+import DeleteEnquiryButton from "@/components/DeleteEnquiryButton";
 import Icon from "@/components/Icon";
 
 const PAGE_SIZE = 20;
@@ -196,7 +197,8 @@ export default async function Enquiries({ searchParams }: { searchParams: Promis
 
       <div className="space-y-2.5 lg:hidden">
         {(data ?? []).map((r: any) => (
-          <Link key={r.id} href={`/enquiries/${r.id}`} className="ecard">
+          <div key={r.id} className="ecard !block">
+          <Link href={`/enquiries/${r.id}`} className="flex items-start justify-between gap-3">
             <div className="min-w-0">
               <b className="truncate">
                 {r.business_name}
@@ -208,6 +210,18 @@ export default async function Enquiries({ searchParams }: { searchParams: Promis
             </div>
             <StatusBadge status={r.status as Status} />
           </Link>
+          <div className="mt-3 flex gap-2 border-t pt-3">
+            <Link href={`/enquiries/${r.id}/edit`} className="act flex-1">
+              <Icon name="edit" className="h-[18px] w-[18px]" />
+              Edit
+            </Link>
+            {isAdmin && (
+              <div className="flex flex-1">
+                <DeleteEnquiryButton id={r.id} name={r.business_name} className="act danger flex-1" />
+              </div>
+            )}
+          </div>
+          </div>
         ))}
         {!data?.length && (
           <p className="py-10 text-center text-sm text-slate-500">
@@ -217,7 +231,7 @@ export default async function Enquiries({ searchParams }: { searchParams: Promis
       </div>
 
       <div className="card hidden overflow-x-auto p-0 lg:block">
-        <table className="w-full min-w-[760px]">
+        <table className="w-full min-w-[900px]">
           <thead className="border-b bg-slate-50">
             <tr>
               <th className="th">Business</th>
@@ -227,6 +241,7 @@ export default async function Enquiries({ searchParams }: { searchParams: Promis
               <th className="th">Status</th>
               <th className="th">Assigned</th>
               <th className="th">Next follow-up</th>
+              <th className="th text-right">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y">
@@ -251,11 +266,20 @@ export default async function Enquiries({ searchParams }: { searchParams: Promis
                 <td className="td"><StatusBadge status={r.status as Status} /></td>
                 <td className="td">{r.assigned?.full_name ?? "—"}</td>
                 <td className="td whitespace-nowrap">{fmtDate(r.next_follow_up_at)}</td>
+                <td className="td">
+                  <div className="flex justify-end gap-2">
+                    <Link href={`/enquiries/${r.id}/edit`} className="act">
+                      <Icon name="edit" className="h-4 w-4" />
+                      Edit
+                    </Link>
+                    {isAdmin && <DeleteEnquiryButton id={r.id} name={r.business_name} />}
+                  </div>
+                </td>
               </tr>
             ))}
             {!data?.length && (
               <tr>
-                <td colSpan={7} className="td py-10 text-center text-slate-500">
+                <td colSpan={8} className="td py-10 text-center text-slate-500">
                   {Object.values(sp).some(Boolean)
                     ? "No enquiries match these filters."
                     : "No enquiries yet. Click “Add enquiry” to record your first vendor."}
