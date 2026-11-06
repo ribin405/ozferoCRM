@@ -36,6 +36,10 @@ export default function EnquiryForm({
   const [phone, setPhone] = useState(values.primary_phone ?? "");
   const [dups, setDups] = useState<Dup>([]);
   const err = state?.errors ?? {};
+  // Fields the browser refused to submit (required or badly formatted). Shown next to the button so a
+  // phone user who is looking at the bottom of the form always sees why nothing was saved.
+  const [invalid, setInvalid] = useState<string[]>([]);
+  const serverProblems = Object.entries(err).map(([k, m]) => `${label(k)}: ${m}`);
   const v = (k: string) => values[k] ?? "";
   const subs = categories.find((c) => c.id === catId)?.subcategories ?? [];
 
@@ -70,7 +74,17 @@ export default function EnquiryForm({
   );
 
   return (
-    <form action={action} onChange={() => setDirty(true)} onSubmit={() => setDirty(false)} className="space-y-6">
+    <form
+      action={action}
+      onChange={() => setDirty(true)}
+      onSubmit={() => setDirty(false)}
+      onInvalidCapture={(e) => {
+        const el = e.target as HTMLInputElement;
+        const name = el.labels?.[0]?.textContent?.replace("*", "").trim() || el.name;
+        setInvalid((prev) => (prev.includes(name) ? prev : [...prev, name]));
+      }}
+      className="space-y-6"
+    >
       {state?.message && (
         <p role="alert" className="rounded bg-rose-50 p-3 text-sm text-rose-700">
           {state.message}
@@ -280,8 +294,24 @@ export default function EnquiryForm({
         </div>
       </section>
 
+      {(invalid.length > 0 || serverProblems.length > 0) && (
+        <div role="alert" className="form-alert">
+          <b>Not saved yet. Please fix:</b>
+          <ul>
+            {(serverProblems.length > 0 ? serverProblems : invalid).map((p) => (
+              <li key={p}>{p}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {state?.message && !state.errors && (
+        <p role="alert" className="form-alert">
+          {state.message}
+        </p>
+      )}
+
       <div className="flex gap-3">
-        <button className="btn" disabled={pending}>
+        <button className="btn" disabled={pending} onClick={() => setInvalid([])}>
           {pending ? "Saving…" : id ? "Save changes" : "Create enquiry"}
         </button>
         <Link
