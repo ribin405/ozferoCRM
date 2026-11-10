@@ -22,12 +22,16 @@ export default function EnquiryForm({
   members,
   values = {},
   currentUserId,
+  enquiryDate,
+  today,
 }: {
   id: string | null;
   categories: Cat[];
   members: Member[];
   values?: Values;
   currentUserId: string;
+  enquiryDate: string;
+  today: string;
 }) {
   const [state, action, pending] = useActionState(saveEnquiry.bind(null, id), undefined as FormState);
   const [dirty, setDirty] = useState(false);
@@ -284,6 +288,14 @@ export default function EnquiryForm({
               </option>
             ))}
           </select>
+        </div>
+        <div>
+          <label className="label" htmlFor="enquiry_date">
+            Enquiry date
+          </label>
+          <input id="enquiry_date" name="enquiry_date" type="date" defaultValue={enquiryDate} max={today} className="input" />
+          {err.enquiry_date && <p className="mt-1 text-xs text-rose-600">{err.enquiry_date}</p>}
+          <p className="mt-1 text-xs text-slate-500">The day the vendor was contacted. Change it if you are recording this later.</p>
         </div>
         {field("next_follow_up_at", "Next follow-up date", { type: "date" })}
         <div className="md:col-span-2">

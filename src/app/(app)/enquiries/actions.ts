@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireAdmin, requireUser } from "@/lib/auth";
 import { enquirySchema, fieldErrors, followUpSchema, formToObject } from "@/lib/schemas";
+import { todayUAE, uaeDate } from "@/lib/queries";
 
 export type FormState = { errors?: Record<string, string>; message?: string } | undefined;
 
@@ -12,14 +13,27 @@ export async function saveEnquiry(id: string | null, _prev: FormState, fd: FormD
   const parsed = enquirySchema.safeParse(formToObject(fd));
   if (!parsed.success) return { errors: fieldErrors(parsed.error) };
 
+  // The enquiry date is stored as created_at (noon UAE time). Only write it when the date really changed,
+  // so saving an old enquiry without touching the date keeps its original timestamp.
+  const { enquiry_date, ...fields } = parsed.data;
+  if (enquiry_date && enquiry_date > todayUAE()) {
+    return { errors: { enquiry_date: "The enquiry date can't be in the future" } };
+  }
+  const atNoon = (d: string) => `${d}T12:00:00+04:00`;
+
   let savedId = id;
   if (id) {
-    const { error } = await supabase.from("vendor_enquiries").update(parsed.data).eq("id", id);
+    const patch: Record<string, unknown> = { ...fields };
+    const { data: current } = await supabase.from("vendor_enquiries").select("created_at").eq("id", id).maybeSingle();
+    if (enquiry_date && current && enquiry_date !== uaeDate(current.created_at)) patch.created_at = atNoon(enquiry_date);
+    const { error } = await supabase.from("vendor_enquiries").update(patch).eq("id", id);
     if (error) return { message: error.message };
   } else {
+    const row: Record<string, unknown> = { ...fields, created_by: profile.id };
+    if (enquiry_date && enquiry_date !== todayUAE()) row.created_at = atNoon(enquiry_date);
     const { data, error } = await supabase
       .from("vendor_enquiries")
-      .insert({ ...parsed.data, created_by: profile.id })
+      .insert(row)
       .select("id")
       .single();
     if (error) return { message: error.message };

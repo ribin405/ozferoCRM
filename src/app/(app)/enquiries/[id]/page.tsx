@@ -43,7 +43,7 @@ export default async function EnquiryDetail({ params }: { params: Promise<{ id: 
     ["Source", e.source ? label(e.source) : "—"],
     ["Assigned to", e.assigned?.full_name ?? "Unassigned"],
     ["Next follow-up", fmtDate(e.next_follow_up_at)],
-    ["Created", `${fmtDateTime(e.created_at)} by ${e.creator?.full_name ?? "—"}`],
+    ["Enquiry date", `${fmtDate(e.created_at)} · recorded by ${e.creator?.full_name ?? "—"}`],
     ["Last updated", fmtDateTime(e.updated_at)],
   ];
 

@@ -86,3 +86,6 @@ export type FollowUpRow = {
   next_follow_up_at: string | null;
   author: { full_name: string } | null;
 };
+
+/** The UAE calendar date (YYYY-MM-DD) of a timestamp. */
+export const uaeDate = (ts: string) => new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Dubai" }).format(new Date(ts));

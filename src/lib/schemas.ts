@@ -49,6 +49,7 @@ export const enquirySchema = z.object({
   assigned_to: optUuid,
   interest_notes: optText,
   next_follow_up_at: optDate,
+  enquiry_date: optDate,
 });
 
 export const followUpSchema = z.object({

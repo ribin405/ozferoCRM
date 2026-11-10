@@ -71,7 +71,7 @@ export async function GET(request: Request) {
     ["WhatsApp", 18], ["Email", 26], ["Emirate", 14], ["Area", 16], ["Address", 30],
     ["Maps link", 26], ["Website", 26], ["Social", 26], ["Products / services", 30],
     ["Source", 12], ["Status", 15], ["Assigned to", 18], ["Interest notes", 36],
-    ["Next follow-up", 14], ["Created by", 18], ["Created at", 18], ["Updated at", 18],
+    ["Next follow-up", 14], ["Recorded by", 18], ["Enquiry date", 16], ["Updated at", 18],
   ]);
   for (const e of enquiries) {
     ws.addRow([
@@ -86,7 +86,7 @@ export async function GET(request: Request) {
     ]);
   }
   ws.getColumn(23).numFmt = "dd-mmm-yyyy";
-  ws.getColumn(25).numFmt = "dd-mmm-yyyy hh:mm";
+  ws.getColumn(25).numFmt = "dd-mmm-yyyy";
   ws.getColumn(26).numFmt = "dd-mmm-yyyy hh:mm";
 
   const fs = sheet("Follow-ups", [

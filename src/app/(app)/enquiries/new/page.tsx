@@ -1,6 +1,6 @@
 import EnquiryForm from "@/components/EnquiryForm";
 import { requireUser } from "@/lib/auth";
-import { loadFormOptions } from "@/lib/queries";
+import { loadFormOptions, todayUAE } from "@/lib/queries";
 
 export default async function NewEnquiry() {
   const { supabase, profile } = await requireUser();
@@ -8,7 +8,7 @@ export default async function NewEnquiry() {
   return (
     <div className="max-w-4xl space-y-4">
       <h1 className="text-2xl font-semibold">Add vendor enquiry</h1>
-      <EnquiryForm id={null} categories={categories} members={members} currentUserId={profile.id} />
+      <EnquiryForm id={null} categories={categories} members={members} currentUserId={profile.id} enquiryDate={todayUAE()} today={todayUAE()} />
     </div>
   );
 }
